@@ -52,13 +52,13 @@ El objetivo principal de esta documentación es proporcionarte una introducción
 |--------|------|
 
 ## Pinout Teensy 4.1
-![teensy4.1](image.png)
+![teensy4.1](/Creacion_PCB/imagenes/image.png)
 
 ## Diagrama esquematico
 Un diagrama esquemático es una representación gráfica de un circuito electrónico que utiliza símbolos estándar para representar componentes y conexiones. Se utiliza para planificar, diseñar y comprender la estructura y el funcionamiento de un circuito electrónico.
 
 ### Diagrama esquematico usado por nosotros para la fabricacion de la PCB
-![nUESTRO](Schematic_Trabajo-roboliga_2024-05-02.png)
+![nUESTRO](/Creacion_PCB/imagenes/Schematic_Trabajo-roboliga_2024-05-02.png)
 
 
 ## Pasos para hacer un diagrama esquematico
@@ -69,10 +69,10 @@ Reúne la Información Relevante: Obtén las especificaciones técnicas de los c
 
 ### Paso 2: Abrir Easy EDA y Crear un Nuevo Proyecto
 Crear un Nuevo Proyecto: Una vez que hayas iniciado sesión, crea un nuevo proyecto desde el menú.
-![alt text](image-8.png)
+![alt text](/Creacion_PCB/imagenes/image-8.png)
 ### Paso 3: Agregar Componentes
 Seleccionar Componentes: Utiliza la biblioteca (los componentes que use para crear la PCB mayormente la encontre en las contribuciones de los usuarios) de Easy EDA para buscar y seleccionar los componentes que necesitas para tu diseño.
-![alt text](image-9.png)
+![alt text](/Creacion_PCB/imagenes/image-9.png)
 Conexión de Componentes: Conecta los componentes entre sí utilizando líneas para representar las conexiones eléctricas. Asegúrate de seguir las conexiones adecuadas de acuerdo con las especificaciones de los componentes.
 
 ### Paso 4: Etiquetar y Anotar
@@ -94,14 +94,14 @@ Una vez que hayas diseñado tu diagrama esquemático en EasyEDA, puedes proceder
 ### Paso 1: Convertir a PCB
 1. Abre tu proyecto en EasyEDA.
 2. Selecciona la opción "Convertir a PCB" desde la interfaz.
-![alt text](image-1.png)
+![alt text](/Creacion_PCB/imagenes/image-1.png)
 3. EasyEDA transferirá automáticamente tus componentes al entorno de la PCB.
 
 ### Paso 2: Enrutamiento de Pistas
 1. Utiliza la herramienta de "autoroute" para conectar los componentes.
-![alt text](image-2.png)
+![alt text](/Creacion_PCB/imagenes/image-2.png)
 2. Asegúrate de seguir las reglas de diseño para evitar que se choquen las pistas en nuestro caso usamos nets o uniones de esta manera
-![alt text](image-4.png)
+![alt text](/Creacion_PCB/imagenes/image-4.png)
 
 ### Paso 3: Agregar Capas de Cobre
 1. Si es necesario, agrega capas de cobre adicionales para pistas o planos de tierra.
@@ -112,7 +112,7 @@ Una vez que hayas diseñado tu diagrama esquemático en EasyEDA, puedes proceder
 
 ### Paso 5: Generar Archivos Gerber
 1. Utiliza la función integrada de EasyEDA para generar los archivos Gerber necesarios para la fabricación de la PCB.
-![alt text](image-5.png)
+![alt text](/Creacion_PCB/imagenes/image-5.png)
 ### Paso 6: Envío a Fabricación
 1. Envía los archivos Gerber a un fabricante de PCB para que produzcan físicamente tu placa.
 
@@ -127,7 +127,7 @@ Una vez que hayas diseñado tu diagrama esquemático en EasyEDA, puedes proceder
 
 Al observar detenidamente, se pueden notar varias mejoras importantes en nuestro diseño. Una de ellas es la optimización en la colocación de componentes, lo que permite que los cables utilizados sean más cortos. Esto no solo contribuye a una apariencia más ordenada, sino que también reduce la posibilidad de interferencias y pérdidas de señal.
 
-Además, hemos mejorado la claridad del diseño mediante la implementación de serigrafía. La serigrafía consiste en agregar marcadores visuales en la PCB que indican la ubicación y función de los componentes, facilitando su identificación y comprensión para los usuarios y técnicos.
+Además, hemos mejorado la claridad del diseño mediante la implementación de serigrafía. La serigrafía consiste en agregar marcadores visuales en la PCB que indican la ubicación y función de los componentes, facilitando su identificación y comprensión para los usuarios.
 
 Otra mejora significativa es el aumento del grosor de las pistas en la PCB. Este ajuste garantiza que las pistas puedan soportar adecuadamente la corriente que fluye a través de ellas, lo que mejora la confiabilidad y la seguridad del circuito.
 
