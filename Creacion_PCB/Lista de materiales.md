@@ -14,7 +14,7 @@ A continuación se detallan los componentes que estamos haciendo uso para hacer 
 
 - **Uso:** Giroscopio y acelerómetro
 - **Cantidad:** 1*
-- **Enlace:** [MPU6050](https://es.aliexpress.com/i/1005001430861134.html?gatewayAdapt=glo2esp)
+- **Enlace:** [MPU6050](https://www.mercadolibre.com.ar/mpu6050-gy-521-modulo-de-sensor-de-acelerometro-y-giroscopio/p/MLA32941833?pdp_filters=category:MLA372999#searchVariation=MLA32941833&position=1&search_layout=grid&type=product&tracking_id=41982bb7-c8c1-44c2-b803-7a05376bb1ce)
 
 ### Sensor ToF VL53L0X
 
