@@ -307,7 +307,7 @@ while True:
         ser.write(output)
  
         ### DEBUGS ###
-        # print("Speed:", speed, "Angle:", angle, "Task:", task, "Line Middle:", line_middle)
+        print("Speed:", speed, "Angle:", angle, "Task:", task, "Line Middle:", line_middle)
        
         if debugOriginal:
             cv2.imshow('Original', frame)
