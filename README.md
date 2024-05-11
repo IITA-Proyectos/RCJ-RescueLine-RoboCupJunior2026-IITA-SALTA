@@ -1,2 +1,1 @@
-# Roboliga-2024
-Repositorio del equipo que se prepara para la competencia Roboliga 2024
+https://docs.google.com/document/d/1URrj7C5BlnNwTvVaelb9nkeXKay4KHsS37W_Ht7VfTA/edit?usp=sharing
