@@ -326,5 +326,7 @@ while True:
  
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    while True:
+        print("entrando a zona de rescate")
 cv2.destroyAllWindows()
 vs.stop()
