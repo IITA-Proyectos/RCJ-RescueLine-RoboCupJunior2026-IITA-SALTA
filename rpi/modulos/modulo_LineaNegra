@@ -327,6 +327,13 @@ while True:
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     while True:
-        print("entrando a zona de rescate")
+        print("detecte la linea plateada")
+        print("si o no")
+        if input("terminar?:")=="si":
+            print("listo")
+            break
+        else:
+            print("que triste lo termine igual XD")
+            break
 cv2.destroyAllWindows()
 vs.stop()
