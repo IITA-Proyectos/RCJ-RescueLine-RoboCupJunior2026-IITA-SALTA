@@ -5,7 +5,7 @@
 | Piezas | Cantidad | Cantidad de tornillos | impresas
 | ----------- | ----------- | ----------- | ----------- |
 | Carcasa_raspberry | 1 | 4 | 
-| Tubitos | 4 | 4
+| Tubitos | 2 | 2
 |Soporte Motores | 4 | 8
 | Manjia y s. sensores | 1 | 4
 | Cuba | 1 | 6
@@ -19,15 +19,17 @@
 | Casco servo | 1 | 2
 | Base | 1 | 0
 | Agarra bateria | 1 | 2
-| Total de tornillos | | 54
+| Total de tornillos | | 52
 
 ### Vistas laterales y frontales
-![Fontal](https://1drv.ms/i/s!AsgktPztU3pWtGyzUdgWYlFY8rV8?e=tRDumR)
+![Fontal](/Diseño-Cad/Imagenes/front.png)
 
-![De atrás](C:\Users\ina1v\OneDrive\Documentos\2024\robótica\Roboliga-2024-Rescue-Line-Team-RescueBot\Diseño-Cad\Imagenes\back.png, "vista de atras")
+![De atrás](/Diseño-Cad/Imagenes/back.png)
 
-<img ="C:\Users\ina1v\OneDrive\Documentos\2024\robótica\Roboliga-2024-Rescue-Line-Team-RescueBot\Diseño-Cad\Imagenes\back.png"> Por que no se agregaaaa </img>
+![Inferior](/Diseño-Cad/Imagenes/inferior.png)
 
+![Superior](/Diseño-Cad/Imagenes/superior.png)
 
-> no se agregan las imágenes porque son locales
+![Izquierdo](/Diseño-Cad/Imagenes/left.png)
 
+![Derecho](/Diseño-Cad/Imagenes/right.png)
