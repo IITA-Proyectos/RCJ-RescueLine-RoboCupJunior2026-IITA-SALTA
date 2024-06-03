@@ -2,9 +2,9 @@
 
 La Raspberry envía tareas (Tasks), la teensy las entiende y las convierte en acciones (Actions) y estas representan un cambio en el comportamiento del robot (Case).
 
-## Por ejemplo:
+### **Por ejemplo:**
 
-### La el seguidor de linea detecta un cuadrado verde a la izquierda.
+### *El seguidor de linea detecta un cuadrado verde a la izquierda.*
 
  **Task:** La Raspberry le envia una tarea a la Tennsy.
  
