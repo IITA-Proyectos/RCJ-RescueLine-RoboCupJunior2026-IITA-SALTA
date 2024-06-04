@@ -4,7 +4,7 @@
 
 | Piezas | Cantidad | Cantidad de tornillos | Tamaño de tornillos
 | ----------- | ----------- | ----------- | ----------- |
-| Enganche | 1 | 2 | 2x5mm(una) y 3x15(otra)
+| Agarra Servo en Cuba (pieza nueva surgida) | 1 | 2 | 2x5mm(una) y 3x15(otra)
 | Carcasa_raspberry | 1 | 4 | Diam2mm x5
 | Tubitos | 2 | 4 | Diam3mm x10
 |Soporte Motores | 4 | 12 | Diam3mm x18
@@ -37,4 +37,3 @@ La manija y los soportes de sensores son una sola pieza, pero están divididos e
 ![Izquierdo](/Diseño-Cad/Imagenes/left.png)
 
 ![Derecho](/Diseño-Cad/Imagenes/right.png)
-6
