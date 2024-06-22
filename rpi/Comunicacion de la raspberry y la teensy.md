@@ -45,7 +45,7 @@ que si no se cumple el "if" inicial, pasa a esa parte del codigo*) que indica cu
 
 Por ultimo está el **“else”** (*El else sirve por si no se cumple ninguna condicion de if o else if*) que es la parte más elaborada donde ya se encuentra todo el resto del codigo.
 
-![alt text](/docs/imagenes/encendido.png)
+![alt text](/rpi/encendido.png)
 
 ### Sistema de Encendido
 En cuanto al sistema de encendido se encuentra mejor explicado en este otro documento:

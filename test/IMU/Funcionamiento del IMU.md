@@ -3,8 +3,6 @@ Este README explica la importancia del IMU (Unidad de Medición Inercial) en el 
 
 Elegimos el MPU6050 como giroscopio y acelerómetro para el IMU del proyecto por su precisión, facilidad de integración y costo accesible. Este sensor nos permite implementar funcionalidades avanzadas de medición inercial en el robot de manera efectiva.
 
-
-
 #### Código y Funcionamiento
 
 El código proporcionado consta de dos módulos principales: `IMU.cpp` y `runtimempu.cpp`, cada uno desplegando funciones clave para el control y la navegación del robot.

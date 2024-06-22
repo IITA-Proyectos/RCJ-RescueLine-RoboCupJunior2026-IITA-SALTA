@@ -2,7 +2,7 @@
 
 ## OpenCV
 
-![imagen](/docs/imagenes/opencv.png)
+![imagen](/lib/imagenes/opencv.png)
 
 **OpenCV** (cv2) es una herramienta sumamente esencial en el ámbito del procesamiento de imágenes y visión por computadora. Al ser combinada con la librería camthreader (*la cual aunque no se encuentra disponible en Pylance*) cumple con la importante función de gestionar y capturar los fotogramas provenientes de la cámara. OpenCV, por su parte, ofrece una vasta variedad de funciones para el procesamiento de imágenes, la detección de objetos y el análisis de vídeo, aspectos fundamentales para las distintas tareas relacionadas con la cámara dentro del programa.
 
@@ -21,7 +21,7 @@ adquisición de imágenes que posteriormente serán procesadas por OpenCV. Su pa
 
 ## NumPy
 
-![NumPy](/docs/imagenes/numpy.png)
+![NumPy](/lib/imagenes/numpy.png)
 
 **NumPy**, una de las librerías más populares en el entorno de Python, desempeña un papel crucial en este programa al permitir el manejo de arreglos numéricos y la realización de operaciones matemáticas complejas. En este contexto, NumPy se utiliza principalmente para la creación de matrices, una estructura de datos esencial para almacenar elementos de manera homogénea y multidimensional. Su eficiencia en la manipulación de datos numéricos resulta invaluable en diversas partes del programa, facilitando la implementación de algoritmos y cálculos complejos.
 
@@ -44,7 +44,7 @@ Además, la biblioteca Math proporciona una amplia gama de funciones matemática
 
 ## PySerial
 
-![pyserial](/docs/imagenes/pyserial.png)
+![pyserial](/lib/imagenes/pyserial.png)
 
 
 
@@ -56,7 +56,7 @@ Al utilizar PySerial, el programa puede enviar comandos y recibir información d
 
 ## NewPing
 
-![NewPing](/docs/imagenes/NewPing.png)
+![NewPing](/lib/imagenes/NewPing.png)
 
 La librería NewPing es una herramienta fundamental para proyectos de robots autónomos que dependen de sensores ultrasónicos para detectar y evitar obstáculos. Esta librería optimiza el manejo de los sensores en plataformas Arduino al utilizar una técnica de temporización sin bloqueo, lo cual permite al microcontrolador realizar otras tareas mientras espera la respuesta del sensor. Esto es crucial para mantener la capacidad de respuesta del robot en tiempo real y gestionar eficientemente múltiples sensores ultrasónicos.
 
@@ -66,7 +66,7 @@ Otra ventaja significativa de NewPing es su compatibilidad con una amplia gama d
 
 ## MPU6050
 
-![MPU6050](/docs/imagenes/mpu6050.png)
+![MPU6050](/lib/imagenes/mpu6050.png)
 
 La librería MPU6050 es fundamental para robots autónomos que requieren un control preciso de la orientación y movimiento. Este sensor de movimiento y giroscopio de seis ejes integra acelerómetro y giroscopio en un solo chip, proporcionando mediciones precisas de la aceleración lineal y la velocidad angular en tres dimensiones. Esto permite al robot determinar su posición, orientación y movimiento con gran exactitud, esencial para la navegación autónoma y la estabilización dinámica.
 
@@ -76,7 +76,7 @@ Además de su funcionalidad básica de medición de movimiento, la librería MPU
 
 ## PID
 
-![PID](/docs/imagenes/PID.png)
+![PID](/lib/imagenes/PID.png)
 
 La librería PID (Proportional-Integral-Derivative) es fundamental en el control de sistemas automatizados como robots usando Arduino. Este tipo de controlador ajusta la salida del sistema en función de la diferencia entre el valor deseado (setpoint) y el valor medido actualmente (feedback). La acción proporcional (P) corrige proporcionalmente el error actual, la acción integral (I) considera la acumulación de errores pasados y la acción derivativa (D) predice la tendencia del error en el futuro. Juntos, estos componentes permiten al controlador PID ajustar la salida de manera precisa y rápida para minimizar el error y estabilizar el sistema.
 
@@ -86,7 +86,7 @@ Implementar la librería PID en Arduino requiere ajustar adecuadamente los pará
 
 ## LiDAR
 
-![lidar](/docs/imagenes/lidar.png)
+![lidar](/lib/imagenes/lidar.png)
 
 La librería LiDAR para robots automatizados en Arduino facilita la integración de sensores LiDAR (Light Detection and Ranging) para la percepción del entorno. Estos sensores emiten pulsos láser y miden el tiempo que tarda en regresar la luz reflejada, permitiendo así calcular distancias precisas a objetos en el entorno cercano del robot. La librería simplifica la comunicación entre el sensor LiDAR y la placa Arduino, proporcionando funciones para inicializar el sensor, adquirir datos de distancia y manejar interrupciones.
 
@@ -96,7 +96,7 @@ Configurar la librería LiDAR en Arduino implica inicializar el sensor correctam
 
 ## VL53L1X
 
-![tof](/docs/imagenes/vl53l1x.png)
+![tof](/lib/imagenes/vl53l1x.png)
 
 La librería VL53L1X para Arduino facilita la integración del sensor de distancia de tiempo de vuelo (ToF) VL53L1X en robots automatizados. Este sensor utiliza tecnología láser para medir distancias con alta precisión y rapidez, operando en rangos de hasta varios metros. La librería simplifica la comunicación entre el sensor VL53L1X y la placa Arduino, proporcionando funciones para inicializar el sensor, configurar parámetros como la distancia máxima de medición y el modo de medición, así como para adquirir datos de distancia en tiempo real.
 
