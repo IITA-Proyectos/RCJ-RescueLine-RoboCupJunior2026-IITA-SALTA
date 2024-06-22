@@ -54,4 +54,23 @@ Al utilizar PySerial, el programa puede enviar comandos y recibir información d
 
  En resumen, PySerial es crucial para establecer una conexión serial confiable entre la Raspberry Pi y la Teensy, lo que permite una interacción fluida y coordinada entre la visión por computadora y el control del robot.
 
+## NewPing
+
+![NewPing](/docs/imagenes/NewPing.png)
+
+La librería NewPing es una herramienta fundamental para proyectos de robots autónomos que dependen de sensores ultrasónicos para detectar y evitar obstáculos. Esta librería optimiza el manejo de los sensores en plataformas Arduino al utilizar una técnica de temporización sin bloqueo, lo cual permite al microcontrolador realizar otras tareas mientras espera la respuesta del sensor. Esto es crucial para mantener la capacidad de respuesta del robot en tiempo real y gestionar eficientemente múltiples sensores ultrasónicos.
+
+Al integrar NewPing en un robot autómata, los desarrolladores pueden acceder fácilmente a funciones que facilitan la medición precisa de la distancia hasta los objetos detectados. La librería ofrece métodos como `ping()` que devuelven la distancia en centímetros, permitiendo al robot tomar decisiones rápidas y precisas basadas en la proximidad de los obstáculos. Además, NewPing incluye características avanzadas como la detección de eventos, que ayuda a manejar situaciones de fallo o errores en la comunicación con los sensores, mejorando la fiabilidad operativa del sistema.
+
+Otra ventaja significativa de NewPing es su compatibilidad con una amplia gama de sensores ultrasónicos disponibles en el mercado, lo cual facilita la selección y configuración del hardware según las necesidades específicas del robot y del entorno. Esto proporciona flexibilidad en el diseño y la implementación de robots autónomos, garantizando un rendimiento óptimo en diversas condiciones ambientales y operativas. En resumen, NewPing no solo simplifica la integración y gestión de sensores ultrasónicos en robots autónomos, sino que también mejora su eficiencia, fiabilidad y capacidad de adaptación en aplicaciones prácticas.
+
+## MPU6050
+
+![MPU6050](/docs/imagenes/mpu6050.png)
+
+La librería MPU6050 es fundamental para robots autónomos que requieren un control preciso de la orientación y movimiento. Este sensor de movimiento y giroscopio de seis ejes integra acelerómetro y giroscopio en un solo chip, proporcionando mediciones precisas de la aceleración lineal y la velocidad angular en tres dimensiones. Esto permite al robot determinar su posición, orientación y movimiento con gran exactitud, esencial para la navegación autónoma y la estabilización dinámica.
+
+Al utilizar la librería MPU6050 con plataformas como Arduino, los desarrolladores pueden acceder fácilmente a funciones que gestionan la comunicación y calibración del sensor. La librería facilita la lectura de datos del acelerómetro y giroscopio, realizando automáticamente la compensación de errores y la fusión de datos necesarias para obtener mediciones precisas y estables. Esto es crucial para mantener la estabilidad del robot durante el movimiento y para ejecutar algoritmos de control que respondan de manera eficiente a cambios en el entorno o en las condiciones de operación.
+
+Además de su funcionalidad básica de medición de movimiento, la librería MPU6050 también soporta características avanzadas como el DMP (Digital Motion Processor), que permite realizar cálculos complejos internamente en el sensor, reduciendo la carga computacional en el microcontrolador principal. Esto optimiza el rendimiento del sistema global del robot al liberar recursos para otras tareas críticas, como el procesamiento de datos de otros sensores o la toma de decisiones basadas en la información ambiental.
 
