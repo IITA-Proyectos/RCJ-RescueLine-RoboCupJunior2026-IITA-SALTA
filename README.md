@@ -67,21 +67,21 @@ A continuación, se detallan los componentes que estamos utilizando para el proy
 - **Cantidad:** 1*
 
 ## Hardware del robot
-![alt text](imagenes\image.png)
+![alt text](imagenes/image.png)
 - Diseño 3D del Robot hecho en Fusion360
 
-![alt text](imagenes\image-1.png)
+![alt text](imagenes/image-1.png)
 - Diseño PCB del Robot hecho en EasyEda
 
 ## Software del Robot
 ### Raspberry pi (Python)
 Es una computadora de placa unica con su potente CPU, RAM nos facilita el funcionamiento de programa 
 Usamos la raspberry pi para procesamiento de imagen con una camara usando la libreria Open CV envia datos a la Teensy por medio de un puerto serial (UART)
-![alt text](imagenes\image-2.png)
+![alt text](imagenes/image-2.png)
 ### Teensy (C++)
 Es una placa de microprocesamiento mas potente que las arduino comunes consta de gran variedad de pines lo que facilita la conexion de los mismos.
 Recibe datos de la raspberry pi para realizar diversas acciones (detecciones de obstaculo, movimiento) a partir de los componentes
-![alt text](imagenes\image-3.png)
+![alt text](imagenes/image-3.png)
 
 ## Para más:
 - https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/beb59b8b4d3ad57cc9bd6ae8f23ab345ed6bcc90/Dise%C3%B1o-Cad(Diseño cad)
