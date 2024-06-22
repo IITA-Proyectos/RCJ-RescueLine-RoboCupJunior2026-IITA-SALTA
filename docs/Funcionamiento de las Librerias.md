@@ -74,3 +74,33 @@ Al utilizar la librería MPU6050 con plataformas como Arduino, los desarrollador
 
 Además de su funcionalidad básica de medición de movimiento, la librería MPU6050 también soporta características avanzadas como el DMP (Digital Motion Processor), que permite realizar cálculos complejos internamente en el sensor, reduciendo la carga computacional en el microcontrolador principal. Esto optimiza el rendimiento del sistema global del robot al liberar recursos para otras tareas críticas, como el procesamiento de datos de otros sensores o la toma de decisiones basadas en la información ambiental.
 
+## PID
+
+![PID](/docs/imagenes/PID.png)
+
+La librería PID (Proportional-Integral-Derivative) es fundamental en el control de sistemas automatizados como robots usando Arduino. Este tipo de controlador ajusta la salida del sistema en función de la diferencia entre el valor deseado (setpoint) y el valor medido actualmente (feedback). La acción proporcional (P) corrige proporcionalmente el error actual, la acción integral (I) considera la acumulación de errores pasados y la acción derivativa (D) predice la tendencia del error en el futuro. Juntos, estos componentes permiten al controlador PID ajustar la salida de manera precisa y rápida para minimizar el error y estabilizar el sistema.
+
+En el contexto de un robot controlado por Arduino, el PID se emplea para mejorar la precisión del movimiento y la respuesta ante perturbaciones externas. Por ejemplo, al mover un robot hacia un punto específico, el control PID ajusta continuamente los valores de velocidad y dirección de los motores en función de cómo se desvía la posición real del punto deseado. Esto asegura que el robot pueda llegar al destino de manera eficiente y con mínima oscilación.
+
+Implementar la librería PID en Arduino requiere ajustar adecuadamente los parámetros P, I y D mediante pruebas y ajustes iterativos para adaptarse a las características específicas del robot y las condiciones del entorno. Este proceso de sintonización es crucial para lograr un comportamiento estable y preciso del robot en diferentes situaciones operativas. Además, la librería PID en Arduino es flexible y permite adaptarse a diversas aplicaciones, desde el control de trayectorias de robots móviles hasta sistemas de control de temperatura o posicionamiento de actuadores.
+
+## LiDAR
+
+![lidar](/docs/imagenes/lidar.png)
+
+La librería LiDAR para robots automatizados en Arduino facilita la integración de sensores LiDAR (Light Detection and Ranging) para la percepción del entorno. Estos sensores emiten pulsos láser y miden el tiempo que tarda en regresar la luz reflejada, permitiendo así calcular distancias precisas a objetos en el entorno cercano del robot. La librería simplifica la comunicación entre el sensor LiDAR y la placa Arduino, proporcionando funciones para inicializar el sensor, adquirir datos de distancia y manejar interrupciones.
+
+Al utilizar un LiDAR con Arduino, el robot puede realizar tareas como mapeo de entornos, evitación de obstáculos y navegación autónoma de manera más eficiente y precisa. La librería facilita la implementación de algoritmos de control que utilizan datos del LiDAR para tomar decisiones en tiempo real, como ajustar la trayectoria para evitar colisiones o calcular la posición relativa de objetos para fines de mapeo. Esto es especialmente útil en aplicaciones de robótica móvil donde la percepción del entorno es crucial para el rendimiento seguro y eficaz del robot.
+
+Configurar la librería LiDAR en Arduino implica inicializar el sensor correctamente, establecer los parámetros de comunicación serial y realizar pruebas de funcionamiento para garantizar la precisión de las mediciones. Además, la librería puede incluir métodos para filtrar datos de distancia y manejar condiciones de iluminación adversas, mejorando así la robustez y confiabilidad de los sistemas de percepción del robot. En resumen, la librería LiDAR para Arduino amplía las capacidades de percepción sensorial de los robots automatizados, permitiéndoles interactuar de manera más inteligente y segura con su entorno.
+
+## VL53L1X
+
+![tof](/docs/imagenes/vl53l1x.png)
+
+La librería VL53L1X para Arduino facilita la integración del sensor de distancia de tiempo de vuelo (ToF) VL53L1X en robots automatizados. Este sensor utiliza tecnología láser para medir distancias con alta precisión y rapidez, operando en rangos de hasta varios metros. La librería simplifica la comunicación entre el sensor VL53L1X y la placa Arduino, proporcionando funciones para inicializar el sensor, configurar parámetros como la distancia máxima de medición y el modo de medición, así como para adquirir datos de distancia en tiempo real.
+
+Al implementar el VL53L1X con Arduino, los robots pueden realizar diversas tareas que requieren percepción de distancia, como evitar obstáculos, realizar mapeo de entornos o detectar la posición de objetos móviles. La alta precisión del sensor ToF permite una navegación más segura y eficiente, adaptándose dinámicamente a cambios en el entorno. Además, la librería VL53L1X puede incluir métodos avanzados para gestionar múltiples sensores o para filtrar datos de distancia, mejorando la robustez del sistema en condiciones variables de iluminación o reflexión.
+
+Configurar la librería VL53L1X en Arduino implica conectar físicamente el sensor al microcontrolador, cargar la librería en el entorno de desarrollo Arduino IDE y utilizar las funciones proporcionadas para inicializar y leer los datos del sensor. A través de esta integración, los robots automatizados pueden mejorar significativamente sus capacidades de percepción espacial y responder de manera más inteligente a su entorno, lo que es crucial para aplicaciones de robótica móvil y sistemas de automatización industrial.
+
