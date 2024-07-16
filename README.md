@@ -41,7 +41,6 @@ He is the team mentor and has been involved in our robotics projects for several
 <a href="https://www.tiktok.com/@iita_salta" target="blank"><img align="center" src="https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white" alt="@benjaminvillagran" /></a>
 <a href="https://www.linkedin.com/company/iita---instituto-de-innovaci%C3%B3n-y-tecnolog%C3%ADa-aplicada/posts/?feedView=all" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="benjaminvillagran"/></a>
 <a href="https://www.facebook.com/IITARoboticaEducativa"target="blank"><img align="center" src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="benjaminvillagran"  /></a>
-<a href="https://www.facebook.com/IITARoboticaEducativa"target="blank"><img align="center" src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="benjaminvillagran"  /></a>
 <a href="https://www.instagram.com/iita_salta"target="blank"><img align="center" src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="benjaminvillagran"  /></a>  
   </p>
 
