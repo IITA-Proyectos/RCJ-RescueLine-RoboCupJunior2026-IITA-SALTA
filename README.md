@@ -2,6 +2,8 @@
 # Welcome to the Github account of the robotics team from IITA Salta (Argentina).
 --- 
 ![pixelcut-export (1)](https://github.com/user-attachments/assets/13db2526-f452-4b42-8d0d-b547f88676d1)
+## Competition info
+The team is preparing for the **'Roboliga'** competition in the Rescue Line category. The Roboliga Rescue Line competition challenges teams of autonomous robots to navigate skillfully through a physical environment that simulates disaster scenarios. Equipped with sensors and programming skills, the robots must follow a line marked on rough terrain, avoiding obstacles and performing tasks such as detecting simulated victims. This competition not only tests robots' ability for autonomous navigation and environmental perception but also assesses the effectiveness of mechanical design strategies and motion control
 ## About us
 
 |  |  |
