@@ -51,7 +51,7 @@ He is the team mentor and has been involved in our robotics projects for several
 ## Our Robot
 All important hardware and software information and notes are stored on this Github. Here's a small overview of the links to the most important repositories. These will be updated and complemented with more information.
 + [Hardware - Robot Design and Components](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/9b5230cf73d64be5884076b33739620f5f83353e/Hardware)
-+ [Software - Teensy](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/beb59b8b4d3ad57cc9bd6ae8f23ab345ed6bcc90/test)
++ [Software - Teensy](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/54fdd2a850cca9e5c6add4816fcaab7ec3cc4359/test)
 + [Software - Python](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/main/rpi)
 
 
