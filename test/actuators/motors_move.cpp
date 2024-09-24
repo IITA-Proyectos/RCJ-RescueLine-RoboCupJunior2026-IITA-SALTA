@@ -87,7 +87,7 @@ void runTime(int speed, int dir, double steer, unsigned long long time) {
     digitalWrite(13, LOW);
 }
 
-void runAngle(int speed, int dir, double angle) {
+void runAngle(int speed, int dir, double steer, double angle) {
     sensors_event_t event;
     bno.getEvent(&event);
     float initialAngle = event.orientation.x;
@@ -99,63 +99,18 @@ void runAngle(int speed, int dir, double angle) {
 
     while (true) {
         bno.getEvent(&event);
-        float currentAngle = event.orientation.x;
-        if (digitalRead(32) == 1){ //switch is off
-            Serial5.write(255);
-            break;
-        }
+        float currentAngle = event.orientation.z;
 
         // Calcular la diferencia más corta entre los ángulos
         float error = targetAngle - currentAngle;
         if (error > 180) error -= 360;
         if (error < -180) error += 360;
 
-        Serial.print("Error actual: ");
-        Serial.println(fabs(error));
+        if (fabs(error) <= 1.0) break;
 
-        if (fabs(error) <= 1.0) break; 
-
-        // Lógica para manejar los 5 valores de ángulo específicos
-        if (angle == 180) {
-            // Girar 180 grados (media vuelta)
-            robot.steer(speed, dir, 1); // Girar a la derecha
-        } else if (angle == 90 || angle == -270) {
-            // Girar 90 grados a la derecha
-            if (error > 0 && error <= 180) {
-                robot.steer(speed, dir, -1); 
-            } else {
-                robot.steer(speed, dir, 1); 
-            }
-        } else if (angle == -90 || angle == 270) {
-            // Girar 90 grados a la izquierda
-            if (error < 0 && error >= -180) {
-                robot.steer(speed, dir, 1); 
-            } else {
-                robot.steer(speed, dir, -1); 
-            }
-        } else if (angle == 45 || angle == -315) {
-            // Girar 45 grados a la derecha
-            if (error > 0 && error <= 180) {
-                robot.steer(speed, dir, -1); 
-            } else {
-                robot.steer(speed, dir, 1); 
-            }
-        } else if (angle == -45 || angle == 315) {
-            // Girar 45 grados a la izquierda
-            if (error < 0 && error >= -180) {
-                robot.steer(speed, dir, 1); 
-            } else {
-                robot.steer(speed, dir, -1); 
-            }
-        }
-        else if (angle > 0) {
-            // Girar 45 grados a la izquierda
-            if (error < 0 && error >= -180) {
-                robot.steer(speed, dir, 1); 
-            } else {
-                robot.steer(speed, dir, -1); 
-            }
-        }
+        // Ajustar la dirección del giro basándose en el signo del error
+        double steerValue = error * steer; // Si error es positivo, gira a la derecha, si es negativo, a la izquierda
+        robot.steer(speed, dir, steerValue);
     }
     robot.steer(0, FORWARD, 0);
 }
@@ -229,43 +184,8 @@ void loop() {
         //robot.steer(10,FORWARD,0.5); // Gira hacia la izquierda | izq: quieto | der:frente
         //robot.steer(10,FORWARD,0.8); // Gira hacia la derecha | izq: +lento | der:+rapido | diferente velocidad
         //robot.steer(10,FORWARD,-0.8); // Gira hacia la izquierda | izq: +rapido | der:+lento | diferente velocidad
-        //runTime(10,FORWARD,0, 3000); // Avanza al frente 1 segundo
-        //runTime(10,FORWARD,1, 3000); // gira a la izquierda 1 segundo
-        //runTime(10,BACKWARD,0, 2000); // retrocede 1 segundo
-        // Y podriamos usar cualquier combinacion de las anteriores para que la haga durante un tiempo determinado
-        /* Secuencia de Pasos 
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,-90); // Gira a la izquierda 90°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,90); //Gira a la derecha 90°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        */
-        /* Secuencia de Pasos
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,180); // Gira a la derecha 180°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,180); // Gira a la derecha 180°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        */
-        /*Secuancia de PASOS
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,45); // Gira a la derecha 45°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,-45); // Gira a la izquierda -45°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        */
-
-       
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,20); // Gira a la derecha 45°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,-20); // Gira a la izquierda -45°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        
-
+        runTime(10,FORWARD,0, 3000); // Avanza al frente 1 segundo
+        runTime(10,FORWARD,1, 3000); // gira a la izquierda 1 segundo
+        runTime(10,BACKWARD,0, 2000); // retrocede 1 segundo
     }
 }
