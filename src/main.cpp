@@ -148,13 +148,11 @@ void runAngle(int speed, int dir, double angle) {
                 robot.steer(speed, dir, -1); 
             }
         }
-        else if (angle > 0) {
-            // Girar 45 grados a la izquierda
-            if (error < 0 && error >= -180) {
-                robot.steer(speed, dir, 1); 
-            } else {
-                robot.steer(speed, dir, -1); 
-            }
+        else if (angle > 0) {   
+            robot.steer(speed, dir, -1); 
+        }
+        else if (angle < 0) {   
+            robot.steer(speed, dir, 1); 
         }
     }
     robot.steer(0, FORWARD, 0);
@@ -257,15 +255,13 @@ void loop() {
         runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
         runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
         */
-
        
         runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,20); // Gira a la derecha 45°
+        runAngle(10,FORWARD,-20); 
         runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,-20); // Gira a la izquierda -45°
+        runAngle(10,FORWARD,20); 
         runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
         runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
         
-
     }
 }
