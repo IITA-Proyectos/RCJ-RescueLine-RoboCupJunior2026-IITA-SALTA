@@ -5,13 +5,13 @@
 #include <elapsedMillis.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
-#include "math.h"                            
+#include "math.h"                          
 // CONSTANTS //
-#define FORWARD 0
-#define BACKWARD 1
-#define BUZZER 33
-#define LED_ROJO 39
-#define SWITCH 32
+#define FORWARD 0 // Def direction ADELANTE
+#define BACKWARD 1 // Def direction ATRAS
+#define BUZZER 33 // Definicion de PIN BUZZER
+#define LED_ROJO 39 // Definicion de PIN LED_ROJO
+#define SWITCH 32 // Definicion de PIN SWITCH
 // INITIALISE BNO055 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 // INITIALISE ACTUATORS //
@@ -167,7 +167,7 @@ void setup() {
     pinMode(SWITCH, INPUT_PULLUP); // SWITCH
     pinMode(BUZZER, OUTPUT); // BUZZER
     pinMode(LED_ROJO, OUTPUT); // LED ROJO
-    pinMode(LED_BUILTIN, OUTPUT); // LED BUILT-IN for debugging
+    pinMode(LED_BUILTIN, OUTPUT); //  LED BUILT-IN for debugging
     Serial1.begin(57600);  // for reading IMU
     Serial5.begin(115200); // for reading data from rpi and state
     Serial.begin(115200);  // displays ultrasound ping result
@@ -215,53 +215,78 @@ void loop() {
         digitalWrite(LED_BUILTIN, HIGH);
         digitalWrite(BUZZER, LOW);
         digitalWrite(LED_ROJO, HIGH);
-        // Aqui lo que sea que queremos probar de los motores !!
-        //robot.steer(0,0,0); // Todos los motores detenidos
-        //robot.steer(10,FORWARD,0); // Mueve los motores hacia el frente los mas lento que puede
-        //robot.steer(100,FORWARD,0); // Mueve los motores hacia el frente los mas rapido que puede
-        //robot.steer(10,BACKWARD,0); // Mueve los motores hacia atras los mas lento que puede
-        //robot.steer(100,BACKWARD,0); // Mueve los motores hacia atras los mas rapido que puede
-        //robot.steer(10,FORWARD,1); // Gira hacia la izquierda | izq: atras | der:frente misma velocidad
-        //robot.steer(10,FORWARD,-1); // Gira hacia la derecha | izq: frente | der:atras misma velocidad
-        //robot.steer(10,FORWARD,-0.5); // Gira hacia la derecha | izq: frente | der:quieto
-        //robot.steer(10,FORWARD,0.5); // Gira hacia la izquierda | izq: quieto | der:frente
-        //robot.steer(10,FORWARD,0.8); // Gira hacia la derecha | izq: +lento | der:+rapido | diferente velocidad
-        //robot.steer(10,FORWARD,-0.8); // Gira hacia la izquierda | izq: +rapido | der:+lento | diferente velocidad
-        //runTime(10,FORWARD,0, 3000); // Avanza al frente 1 segundo
-        //runTime(10,FORWARD,1, 3000); // gira a la izquierda 1 segundo
-        //runTime(10,BACKWARD,0, 2000); // retrocede 1 segundo
-        // Y podriamos usar cualquier combinacion de las anteriores para que la haga durante un tiempo determinado
-        /* Secuencia de Pasos 
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,-90); // Gira a la izquierda 90°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,90); //Gira a la derecha 90°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        */
-        /* Secuencia de Pasos
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,180); // Gira a la derecha 180°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,180); // Gira a la derecha 180°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        */
-        /*Secuancia de PASOS
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,45); // Gira a la derecha 45°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,-45); // Gira a la izquierda -45°
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
-        */
-       
-        runTime(10,FORWARD,0, 3000); // Avanza 3 segundos
-        runAngle(10,FORWARD,-20); 
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runAngle(10,FORWARD,20); 
-        runTime(0,FORWARD,0, 3000); // Parado por 3 segundos
-        runTime(10,BACKWARD,0, 3000); // Retrocede por 3 segundos
+        /*if(steer<30 or steer>150){
+            counter++;
+        }
         
+        if(laststeer<30 and steer>30 and counter>15){
+            runTime(20,1,0.5,500);
+            counter=0;
+        }
+        if(laststeer>150 and steer<150 and counter>15){
+            
+            runTime(20,1,-0.5,500);
+            counter=0;
+        }
+        */
+        if (taskDone) { // robot is currently not performing any task
+            Serial.println("Incoming Task: ");
+            Serial.println(green_state);
+            if (green_state == 0){
+                action = 7;
+            }
+            if(green_state==1){
+                action=6;//verde izquierda
+            }
+            if(green_state==2){
+                action=5;//verde derecha
+            }
+            if (green_state ==3){
+                action=14;
+            }
+            switch (action) {
+                /*
+                case 6: // first imu 90 deg turn
+                    runTime(40,1,0.5,200);
+                    action=7;
+                    
+                case 5: // arc turn with line_middle
+                    runTime(40,1,-0.5,200);
+                    action=7;
+                */
+                /*case 2: // final one-wheel imu turn for obstacle
+                    runAngle(50, FORWARD, -0.5, 90);
+                    taskDone = true;
+                    break;
+                case 4: // final two-wheel imu turn for blue cube & double green
+                    runAngle(50, FORWARD, 0.5, 90);
+                    taskDone = true; 
+                    break;*/
+                case 7: // linetrack
+                    if (steer < -0.7){
+                        runTime(10,FORWARD,0, 1000); // Avanza 1 segundo
+                        runAngle(10,FORWARD,80);  // Gira
+                        runTime(10,BACKWARD,0, 300); // Retrocede 500 msegundos
+                    }if(steer > 0.7 ){
+                        runTime(10,FORWARD,0, 1000); // Avanza 1 segundos
+                        runAngle(10,FORWARD,-80); // Gira
+                        runTime(10,BACKWARD,0, 300); // Retrocede 500 msegundos
+                    }else
+                    {
+                        robot.steer(speed, FORWARD, steer);
+                    }
+                     break;
+                case 14: // turn 180 deg for double green squares 
+                    runTime(0,FORWARD,0, 500);
+                    if (green_state == 3){
+                        runTime(15,FORWARD,0, 500);
+                        runAngle(30,FORWARD,180);
+                    }
+                     // Gira a la derecha 180°
+                    action = 7;
+                    break;
+            }
+        }
+        //laststeer=steer;
     }
 }
