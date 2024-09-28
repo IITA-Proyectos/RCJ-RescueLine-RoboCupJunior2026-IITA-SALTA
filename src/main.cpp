@@ -5,7 +5,8 @@
 #include <elapsedMillis.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
-#include "math.h"                          
+#include "math.h"  
+#include <Ultrasonic.h>                        
 // CONSTANTS //
 #define FORWARD 0 // Def direction ADELANTE
 #define BACKWARD 1 // Def direction ATRAS
@@ -20,6 +21,7 @@ Moto fl(7, 6, 5);
 Moto br(36, 37, 38);
 Moto fr(4, 3, 2);
 DriveBase robot(&fl, &fr, &bl, &br);
+Ultrasonic ultrasonic(8, 9); // Front Ultrasonic HC-SR04 Sensor
 // STATE VARIABLES & FLAGS //
 int counter=0;
 int laststeer=0;
@@ -215,6 +217,8 @@ void loop() {
         digitalWrite(LED_BUILTIN, HIGH);
         digitalWrite(BUZZER, LOW);
         digitalWrite(LED_ROJO, HIGH);
+        //int lectura = ultrasonic.read();
+        
         /*if(steer<30 or steer>150){
             counter++;
         }
@@ -244,49 +248,72 @@ void loop() {
             if (green_state ==3){
                 action=14;
             }
+            /*
+            if (lectura < 15 && lectura != 357)
+            {
+
+            action = 4;
+            }
+            */
             switch (action) {
-                /*
+                
                 case 6: // first imu 90 deg turn
-                    runTime(40,1,0.5,200);
-                    action=7;
+                    runTime(15,FORWARD,0, 500);
+                    runTime(0,FORWARD,0, 500);
+                    serialEvent5();
+                    if (green_state == 1){
+                        runTime(15,FORWARD,0, 1600); // Avanza 2.5 segundo
+                        runAngle(15,FORWARD,-90);  // Gira
+                        runTime(20,FORWARD,0, 300); // Avanza 300 msegundos
+                        runTime(0,FORWARD,0, 2000);
+                    }
+                    break;
                     
                 case 5: // arc turn with line_middle
-                    runTime(40,1,-0.5,200);
-                    action=7;
-                */
+                    runTime(15,FORWARD,0, 500);
+                    runTime(0,FORWARD,0, 500);
+                    serialEvent5();
+                    if (green_state == 2){
+                        runTime(15,FORWARD,0, 1600); // Avanza 1 segundo
+                        runAngle(15,FORWARD,90);  // Gira
+                        runTime(20,FORWARD,0, 300); // Avanza 300 msegundos
+                        runTime(0,FORWARD,0, 2000);
+                    }
+                    break;
+                
                 /*case 2: // final one-wheel imu turn for obstacle
                     runAngle(50, FORWARD, -0.5, 90);
                     taskDone = true;
                     break;
-                case 4: // final two-wheel imu turn for blue cube & double green
-                    runAngle(50, FORWARD, 0.5, 90);
-                    taskDone = true; 
-                    break;*/
+                */
+                //case 4: // Detecta algo con el ultrasonido
+                //    runTime(0,FORWARD,0, 3000); //Se queda parado 3 segundos
+                //    break;
                 case 7: // linetrack
                     if (steer < -0.7){
-                        runTime(10,FORWARD,0, 1000); // Avanza 1 segundo
-                        runAngle(10,FORWARD,80);  // Gira
-                        runTime(10,BACKWARD,0, 300); // Retrocede 500 msegundos
+                        runTime(15,FORWARD,0, 1000); // Avanza 1 segundo
+                        runAngle(15,FORWARD,80);  // Gira
+                        runTime(15,BACKWARD,0, 300); // Retrocede 500 msegundos
                     }if(steer > 0.7 ){
-                        runTime(10,FORWARD,0, 1000); // Avanza 1 segundos
-                        runAngle(10,FORWARD,-80); // Gira
-                        runTime(10,BACKWARD,0, 300); // Retrocede 500 msegundos
+                        runTime(15,FORWARD,0, 1000); // Avanza 1 segundos
+                        runAngle(15,FORWARD,-80); // Gira
+                        runTime(15,BACKWARD,0, 300); // Retrocede 500 msegundos
                     }else
                     {
                         robot.steer(speed, FORWARD, steer);
                     }
                      break;
                 case 14: // turn 180 deg for double green squares 
+                    runTime(15,FORWARD,0, 500);
                     runTime(0,FORWARD,0, 500);
+                    serialEvent5();
                     if (green_state == 3){
                         runTime(15,FORWARD,0, 500);
                         runAngle(30,FORWARD,180);
                     }
                      // Gira a la derecha 180°
-                    action = 7;
                     break;
             }
         }
-        //laststeer=steer;
     }
 }

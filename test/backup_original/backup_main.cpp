@@ -73,24 +73,21 @@ void runTime(int speed, int dir, double steer, unsigned long long time) {
     while ((millis() - startTime) < time) {
         robot.steer(speed, dir, steer);
         digitalWrite(13, HIGH);
-        if (digitalRead(32) == 1) // switch is off
+        if (Serial5.available() > 0) {
+        int lecturas = Serial5.read();
+        Serial.print(lecturas);
+        }
+        
+        if (digitalRead(32) == 1){ //switch is off
             Serial5.write(255);
             break;
+            }
         }
+        
     digitalWrite(13, LOW);
 }
 
-void runTime2(int speed, int dir, double steer, unsigned long long time) {
-    unsigned long long startTime = millis();
-    while ((millis() - startTime) < time) {
-        robot.steer(speed, dir, steer);
-        digitalWrite(13, HIGH);
-        Serial5.write(255);
-    }
-    digitalWrite(13, LOW);
-}
-
-void runAngle(int speed, int dir, double steer, double angle) {
+void runAngle(int speed, int dir, double angle) {
     sensors_event_t event;
     bno.getEvent(&event);
     float initialAngle = event.orientation.x;
@@ -102,18 +99,61 @@ void runAngle(int speed, int dir, double steer, double angle) {
 
     while (true) {
         bno.getEvent(&event);
-        float currentAngle = event.orientation.z;
+        float currentAngle = event.orientation.x;
+        if (digitalRead(32) == 1){ //switch is off
+            Serial5.write(255);
+            break;
+        }
 
         // Calcular la diferencia más corta entre los ángulos
         float error = targetAngle - currentAngle;
         if (error > 180) error -= 360;
         if (error < -180) error += 360;
 
-        if (fabs(error) <= 1.0) break;
+        Serial.print("Error actual: ");
+        Serial.println(fabs(error));
 
-        // Ajustar la dirección del giro basándose en el signo del error
-        double steerValue = error * steer; // Si error es positivo, gira a la derecha, si es negativo, a la izquierda
-        robot.steer(speed, dir, steerValue);
+        if (fabs(error) <= 1.0) break; 
+
+        // Lógica para manejar los 5 valores de ángulo específicos
+        if (angle == 180) {
+            // Girar 180 grados (media vuelta)
+            robot.steer(speed, dir, 1); // Girar a la derecha
+        } else if (angle == 90 || angle == -270) {
+            // Girar 90 grados a la derecha
+            if (error > 0 && error <= 180) {
+                robot.steer(speed, dir, -1); 
+            } else {
+                robot.steer(speed, dir, 1); 
+            }
+        } else if (angle == -90 || angle == 270) {
+            // Girar 90 grados a la izquierda
+            if (error < 0 && error >= -180) {
+                robot.steer(speed, dir, 1); 
+            } else {
+                robot.steer(speed, dir, -1); 
+            }
+        } else if (angle == 45 || angle == -315) {
+            // Girar 45 grados a la derecha
+            if (error > 0 && error <= 180) {
+                robot.steer(speed, dir, -1); 
+            } else {
+                robot.steer(speed, dir, 1); 
+            }
+        } else if (angle == -45 || angle == 315) {
+            // Girar 45 grados a la izquierda
+            if (error < 0 && error >= -180) {
+                robot.steer(speed, dir, 1); 
+            } else {
+                robot.steer(speed, dir, -1); 
+            }
+        }
+        else if (angle > 0) {   
+            robot.steer(speed, dir, -1); 
+        }
+        else if (angle < 0) {   
+            robot.steer(speed, dir, 1); 
+        }
     }
     robot.steer(0, FORWARD, 0);
 }
@@ -223,10 +263,28 @@ void loop() {
                     taskDone = true; 
                     break;*/
                 case 7: // linetrack
-                    robot.steer(speed, FORWARD, steer);
-                /*case 14: // turn 180 deg for double green squares  
-                    runAngle(20, FORWARD, 1, 180);
-                    taskDone = true;*/
+                    if (steer < -0.7){
+                        runTime(10,FORWARD,0, 1000); // Avanza 1 segundo
+                        runAngle(10,FORWARD,80);  // Gira
+                        runTime(10,BACKWARD,0, 300); // Retrocede 500 msegundos
+                    }if(steer > 0.7 ){
+                        runTime(10,FORWARD,0, 1000); // Avanza 1 segundos
+                        runAngle(10,FORWARD,-80); // Gira
+                        runTime(10,BACKWARD,0, 300); // Retrocede 500 msegundos
+                    }else
+                    {
+                        robot.steer(speed, FORWARD, steer);
+                    }
+                     break;
+                case 14: // turn 180 deg for double green squares 
+                    runTime(0,FORWARD,0, 500);
+                    if (green_state == 3){
+                        runTime(15,FORWARD,0, 500);
+                        runAngle(30,FORWARD,180);
+                    }
+                     // Gira a la derecha 180°
+                    action = 7;
+                    break;
             }
         }
         //laststeer=steer;
