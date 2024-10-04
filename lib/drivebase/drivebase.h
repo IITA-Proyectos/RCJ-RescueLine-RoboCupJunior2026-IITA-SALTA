@@ -18,6 +18,7 @@ public:
     double getPWM();
     void reset();
 
+
 private:
     int _pwmPin, _dirPin, _encPin;
     int _nAvg; // samples to take for speed computation
