@@ -13,8 +13,8 @@ import time
 ### 2.DEBUG FLAGS ###
 "___________________________________________________________________________________________________________________________________________________________________________"
 debugOriginal = True        # original frame
-debugBlack = False          # black mask
-debugGreen = False          # green mask
+debugBlack = True          # black mask
+debugGreen = True          # green mask
 debugBlue = False           # blue mask
 debugSliced = False         # sliced black mask to re-acquire line after obstacle
 debugLinegapMask = False    # linegap mask (triangle)
@@ -24,31 +24,17 @@ debugSlicedGreen = False
 ### 3.THRESHOLDS ###
 "___________________________________________________________________________________________________________________________________________________________________________"
 lower_black = np.array([0, 0, 0])     # BGR
-upper_black = np.array([100,105,105])
- 
-lower_black_evac = np.array([0, 0, 0])     # BGR
-upper_black_evac = np.array([60, 60, 60])
+upper_black = np.array([80,80,80])
  
 lower_black_silver = np.array([0, 0, 0])     # BGR
-upper_black_silver = np.array([80, 80, 80])
+upper_black_silver = np.array([100, 100, 100])
  
-lower_green = np.array([70, 80, 80])  # HSV
-upper_green = np.array([80, 255, 255])
+lower_green = np.array([90, 90, 95])  # HSV
+upper_green = np.array([110, 140, 170])
  
-lower_green_evac = np.array([70, 125, 80])  # HSV
-upper_green_evac = np.array([80, 255, 255])
- 
-lower_blue = np.array([110, 80, 50]) # HSV
-upper_blue = np.array([125, 255, 255])
  
 lower_red = np.array([0, 100, 100]) # HSV
 upper_red = np.array([20, 255, 255])
- 
-lower_purple = np.array([115, 40, 140])
-upper_purple = np.array([137, 255, 255])
- 
-lower_orange = np.array([5, 60, 70])
-upper_orange = np.array([25, 255, 255])
  
 lower_marker = np.array([115, 40, 140]) # PURPLE THIS TIME
 upper_marker = np.array([137, 255, 255])
@@ -98,7 +84,6 @@ greenSquare = False     # True if green square is detected
 forcedTurnCounter = 0   # not used: for 135-turn and pacman forced turns
 deposited = False       # if true, exit evac zone
 lastreset = 0
-blueCube = False
 cx_black = width / 2    # for x-value of black centroid (green squares)
 cccounter = 0
 
@@ -171,13 +156,13 @@ while True:
             # if std > 0.28 and np.mean(cv2.inRange(slicedFrame, lower_red, upper_red)) < 10 and np.mean(cv2.inRange(slicedFrame, lower_green, upper_green)) < 10:   # do roomba
             if std > 0.3 and std < 0.9 and data != b'\xff' and (not blue_state) and (not greenSquare):   # can loosen, and check if angle is close to 0
             #if std > 0.4:
-                print('Silver Strip')
+                print('linea plateada')
                 output = [255, round(speed),
                 254, round(angle) + 90,
                 253, 6,
                 252, 0]
                 ser.write(output)
-                break
+
 
         ### 135-TURNS & PACMAN (DISABLED FOR NOW) ###
         y_black = cv2.bitwise_and(y_com, y_com, mask = black_mask)
@@ -204,7 +189,7 @@ while True:
                 cx_black = int(blackM["m10"] / blackM["m00"])   # get x-value of black centroid
  
             if (np.sum(slicedBlackMaskAboveGreen) / (255 * 30 * (rightIndex - leftIndex))) > 0.32:   # if mean is high -> square before line
-                greenSquare = True
+                greenSquare = False
                 filtered_green_mask = cv2.erode(green_mask, kernel)
                 filtered_green_mask = cv2.dilate(green_mask, kernel)
                 green_contours, hierarchy = cv2.findContours(filtered_green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -234,59 +219,7 @@ while True:
         if counter > 0:
             counter -= 1
 
-        "___________________________________________________________________________________________________________________________________________________________________________"
-        ### 9.DETECT BLUE CUBE ###
-        "___________________________________________________________________________________________________________________________________________________________________________"
-        blue_mask_raw = cv2.inRange(hsv_frame, lower_blue, upper_blue)
-        blue_contours_raw, hierarchy = cv2.findContours(blue_mask_raw, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-       
-        blue_state = False  # triggers only if blue cube is near to robot
-        blue_mask = np.zeros(shape = (height, width), dtype = np.uint8) # to draw convex hull and filter pixels
-        x_blue = np.zeros(shape = (height, width), dtype = np.uint8)    # for calculating resultant
-        y_blue = np.zeros(shape = (height, width), dtype = np.uint8)    # for calculating resultant
- 
-        if len(blue_contours_raw) > 0:   # if there are blue contours
-            max_contour = cv2.convexHull(max(blue_contours_raw, key = cv2.contourArea))
-            max_contour_area = cv2.contourArea(max_contour) # get area of max contour (convex hull)
-            if max_contour_area > min_cube_size:  # blue cube detected
-                # print('Blue Cube Detected')
-                blue_mask = cv2.drawContours(blue_mask, [max_contour], -1, 255, -1) # draw max contour on blue mask
-                x_blue = cv2.bitwise_and(x_com, x_com, mask = blue_mask)
-                y_blue = cv2.bitwise_and(y_com, y_com, mask = blue_mask)
-                M = cv2.moments(blue_mask)
-                lowest_blue = M["m01"] / M["m00"]   # lowest point of cube
-
-                if not blueCube:
-                    task = 8
-                    blueCube = True
- 
-                if lowest_blue > 40:   # if cube is nearby, turn to center on it
-                    # print('Centering Blue Cube')
-                    blue_state = True
-                   
-                    if np.mean(x_blue) < 0:  # turn left (2-wheel turn)
-                        angle = 90
-                    else: # turn right (2-wheel turn)
-                        angle = -90
-                   
-                    speed = min(abs(np.mean(x_blue)) * 1000, 20) # speed based on error (x-vectors)
-                    if np.mean(x_blue) > -0.0075 and np.mean(x_blue) < 0.0075:  # cube is roughly centered
-                        # print('Picking up Blue Cube')
-                        task = 4
-                        blueCube = False
- 
-        if (not blue_state) and (not greenSquare):  # do linetrack with / without blue bias
-            if (np.max(y_black) < 0.5) and (x_max - x_min) < 1.2:   # line gap (no line ahead and line is not too wide)
-                # print('Linegap')
-                x_resultant = np.mean(x_black_uncropped) + (10 * np.mean(x_blue))  # use coms without top black areas masked
-                y_resultant = np.mean(y_black_uncropped) + (10 * np.mean(y_blue))  # prevents oscillations & reacquire line
- 
-            else:
-                x_resultant = np.mean(x_black) + (10 * np.mean(x_blue)) # use coms with top black areas masked
-                y_resultant = np.mean(y_black) + (10 * np.mean(y_blue)) # prevents robot from veering off the course
-           
-            angle = (math.atan2(y_resultant, x_resultant) / math.pi * 180) - 90 if y_resultant != 0 else 0    
-        "___________________________________________________________________________________________________________________________________________________________________________"
+        "_______________________________________________________________________________________________________________________________________________________________________"
         ### 10.DETECT LINE AFTER OBSTACLE ###
         "___________________________________________________________________________________________________________________________________________________________________________"
         sliced_black_mask = black_mask[75:95, :]
@@ -315,8 +248,6 @@ while True:
             cv2.imshow('Black Mask', black_mask)
         if debugGreen:
             cv2.imshow('Green Mask', green_mask)
-        if debugBlue:
-            cv2.imshow('Blue Mask', blue_mask_raw)
         if debugSliced:
             cv2.imshow('Sliced Black Mask', sliced_black_mask)
         if debugLinegapMask:
@@ -326,7 +257,7 @@ while True:
  
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    while True:
+    """while True:
         print("detecte la linea plateada")
         print("si o no")
         if input("terminar?:")=="si":
@@ -334,6 +265,6 @@ while True:
             break
         else:
             print("que triste lo termine igual XD")
-            break
+            break"""
 cv2.destroyAllWindows()
 vs.stop()
