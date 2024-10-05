@@ -217,5 +217,7 @@ void loop() {
       digitalWrite(BUZZER, LOW);
       digitalWrite(LED_ROJO, HIGH);
       //Here put all the neccesary code to solve the rescue zone
+
+      
     }
 }
