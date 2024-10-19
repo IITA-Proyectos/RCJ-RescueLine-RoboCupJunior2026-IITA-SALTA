@@ -36,13 +36,16 @@
  */
 
 #include <Ultrasonic.h>
-
+#include "Arduino.h"
+#include "Adafruit_APDS9960.h"
+#include "Adafruit_BNO055.h"
+#include 
 /*
  * Pass as a parameter the trigger and echo pin, respectively,
  * or only the signal pin (for sensors 3 pins), like:
  * Ultrasonic ultrasonic(13);
  */
-Ultrasonic ultrasonic(12, 13);
+Ultrasonic ultrasonic(8, 9);
 int distance;
 
 void setup() {
