@@ -1,57 +1,49 @@
 #include <Wire.h>
-#include <VL53L1X.h>
-#include <Arduino.h>
+#include <VL53L0X.h>
 
-VL53L1X LeftLidar, RightLidar;
+VL53L0X left_tof;   // Sensor 1
+VL53L0X right_tof;  // Sensor 2
 
 void setup()
 {
-  Serial.begin(115200);
-  Wire.begin();
-  Wire1.begin();
-  Wire.setClock(400000); // use 400 kHz I2C
-  Wire1.setClock(400000);
+  Serial.begin(9600);
+  Wire1.begin();   // Initialize the first I2C bus
+  Wire2.begin();  // Initialize the second I2C bus
 
-  LeftLidar.setBus(&Wire1);
+  left_tof.setBus(&Wire2);   // Assign the first bus to Sensor 1
+  right_tof.setBus(&Wire1); // Assign the second bus to Sensor 2
 
-  LeftLidar.setTimeout(500);
-  RightLidar.setTimeout(500);
+  left_tof.setAddress(0x30); // Set unique address for Sensor 1
+  right_tof.setAddress(0x30); // Set unique address for Sensor 2
 
-  if (!LeftLidar.init())
-  {
-    Serial.println("Failed to detect and initialize sensor!");
-    while (1);
-  }
-  if (!RightLidar.init())
-  {
-    Serial.println("Failed to detect and initialize sensor!");
-    while (1);
-  }
-  
-  // Use long distance mode and allow up to 50000 us (50 ms) for a measurement.
-  // You can change these settings to adjust the performance of the sensor, but
-  // the minimum timing budget is 20 ms for short distance mode and 33 ms for
-  // medium and long distance modes. See the VL53L1X datasheet for more
-  // information on range and timing limits.
-  LeftLidar.setDistanceMode(VL53L1X::Medium);
-  LeftLidar.setMeasurementTimingBudget(33000);
-  RightLidar.setDistanceMode(VL53L1X::Medium);
-  RightLidar.setMeasurementTimingBudget(33000);
+// Continue with your setup and loop functions as before
 
-  // Start continuous readings at a rate of one measurement every 50 ms
-  LeftLidar.startContinuous(33);
-  RightLidar.startContinuous(33);
+  left_tof.init();
+  left_tof.setTimeout(500);
+  left_tof.startContinuous();
+
+  right_tof.init();
+  right_tof.setTimeout(500);
+  right_tof.startContinuous();
 }
 
 void loop()
 {
-  Serial.print("L: ");
-  Serial.print(LeftLidar.read());
-  if (LeftLidar.timeoutOccurred()) { Serial.print(" L TIMEOUT"); }
+  int distance_left_tof = left_tof.readRangeContinuousMillimeters();
+  int distance_right_tof = right_tof.readRangeContinuousMillimeters();
 
-  Serial.print(" R: ");
-  Serial.print(RightLidar.read());
-  if (RightLidar.timeoutOccurred()) { Serial.print(" R TIMEOUT"); }
+  Serial.print("Distance Left: ");
+  Serial.print(distance_left_tof);
+  Serial.print("mm");
+
+  if (left_tof.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
+
+  Serial.print("   Distance Right: ");
+  Serial.print(distance_right_tof);
+  Serial.print("mm");
+
+  if (right_tof.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
   Serial.println();
+  delay(100);
 }

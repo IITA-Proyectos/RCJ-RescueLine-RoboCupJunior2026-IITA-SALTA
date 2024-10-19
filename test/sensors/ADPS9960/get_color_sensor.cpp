@@ -25,11 +25,10 @@ struct Color {
 };
 
 Color known_colors[] = {
-  {"Blanco", 29, 38, 49, 141},
-  {"Negro", 2, 2, 3, 9},
-  {"Verde", 3, 10, 7, 28},
-  {"Rojo", 13, 3, 5, 25},
-  {"Plateado", 14, 20, 34, 108}
+  {"Blanco", 25, 35, 49, 131},
+  {"Negro", 2, 6, 7, 20},
+  {"Verde", 3, 4, 5, 15},
+  {"Plateado", 19, 25, 43, 124}
 };
 
 // Función para leer los valores del sensor y determinar el color
