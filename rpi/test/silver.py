@@ -131,10 +131,10 @@ while not silverstripdetected:
         slicedFrame = frame[int(0.8 * furthestLineIndex):furthestLineIndex + 1, :]
         std = np.std(slicedFrame) / np.mean(slicedFrame)
         cv2.imshow('Silver Sliced Frame', slicedFrame)
-        '''if std < threshold:
+        if std < threshold:
           threshold -= 0.01
         else:
-          silverstripdetected = True'''
+          silverstripdetected = True
         print(std)
     if cv2.waitKey(1) & 0xFF == ord('q'):
       break

@@ -28,7 +28,9 @@ Claw claw(&lift, &left, &right, &sort, &deposit);
 #define BUZZER 35 // Definicion de PIN BUZZER
 #define LED_ROJO 34 // Definicion de PIN LED_ROJO
 #define SWITCH 32 // Definicion de PIN SWITCH
-
+elapsedMillis steertimer; // Cuenta el tiempo transcurrido
+bool contador = false; // Para saber si estamos contando el tiempo o no
+bool retroceder = false; // Para saber si debe retroceder
 // INITIALISE BNO055 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 // INITIALISE ACTUATORS //
@@ -45,12 +47,13 @@ int serial5state = 0; // serial code e.g. 255
 double speed;        // speed (0 to 100)
 double steer;        // angle (0 to 180 deg, will -90 later)
 int green_state = 0; // 0 = no green squares, 1 = left, 2 = right, 3 = double
-int line_middle = 0; // if there is a line to reacquire after obstacle
+int silver_line = 0; // if there is a line to reacquire after obstacle
 int action;          // action to take (part of a task)
 bool taskDone = false; // if true, update current_task
 int angle0;             // initial IMU reading
 bool startUp = false;
 float frontUSReading;
+int RanNumber;
 String rutina = "linea";
 
 int cccounter, leftLidarReading, rightLidarReading;
@@ -191,7 +194,7 @@ void serialEvent5() {
         else if (serial5state == 2) // set task
             green_state = data;
         else if (serial5state == 3) // set line_middle
-            line_middle = data;
+            silver_line = data;
         }
     }
     
@@ -417,47 +420,75 @@ void loop() {
             if (green_state ==3){
                 action=14;
             }
-            if (front_distance != 0 && front_distance < 20){
+            if (front_distance != 0 && front_distance < 12){
                 action = 1;
+            }
+            if(silver_line == 1){
+                action = 2;
             }
             switch (action) {
                 case 1:
                     digitalWrite(BUZZER,HIGH);
                     delay(100);
                     digitalWrite(BUZZER,LOW);
+                    leer_ultrasonidos();
+                    if (front_distance != 0 && front_distance < 12){
+                    RanNumber = random(3);
+                    RanNumber=random(1,3);
+                    if (RanNumber==1){
+                    runAngle(25,FORWARD,-80);
+                    while(digitalRead(32) == 0){
+                        robot.steer(30,FORWARD,-0.35);
+                        serialEvent5();
+                            if(steer != 0){
+                                break;
+                        }
+                    }
+                    }
+                    if(RanNumber==2){
+                        runAngle(25,FORWARD,80);
+                        while(digitalRead(32) == 0){
+                            robot.steer(30,FORWARD,0.35);
+                            serialEvent5();
+                            if(steer != 0){
+                                break;
+                            }
+                    }
+                        }
+                }
+                    break;
+                case 2:
                     runTime(0,FORWARD,0,2000);
-                    
+                    rutina = "rescate";
                     break;
                 case 6: 
-                    runTime(30,FORWARD,0,750);
+                    runTime(20,FORWARD,0,800);
                     serialEvent5();
                     if (green_state == 1){                        
-                        runAngle(20,FORWARD,-90);
-                        runTime(20,FORWARD,0,250);
-                            
+                        runAngle(35,FORWARD,-45);                            
                     }
                     break;
                 case 5: 
-                    runTime(30,FORWARD,0,750);
+                    runTime(20,FORWARD,0,800);
                     serialEvent5();
                     if (green_state == 2){                        
-                        runAngle(20,FORWARD,90);
-                        runTime(20,FORWARD,0,250);
+                        runAngle(25,FORWARD,45);
                     }
                     break;
                 case 7: // linetrack
-                    /*if (steer < -0.7){
-                        runTime(15,FORWARD,0, 1000); // Avanza 1 segundo
-                        runAngle(15,FORWARD,80);  // Gira
-                        runTime(15,BACKWARD,0, 300); // Retrocede 500 msegundos
-                    }if(steer > 0.7 ){
-                        runTime(15,FORWARD,0, 1000); // Avanza 1 segundos
-                        runAngle(15,FORWARD,-80); // Gira
-                        runTime(15,BACKWARD,0, 300); // Retrocede 500 msegundos
-                    }else
-                    {*/
+                     /*   if (steer == 0 && !contador) { 
+                        steertimer = 0;  
+                        contador = true; 
+        }
+                    if (contador && steer == 0) {
+                        if (steertimer >= 8000) { 
+                            runTime(30, BACKWARD, steer, steertimer);  
+                        }
+                    }*/
+                    /*if (steer != 0) {
+                        contador = false;  */
                         robot.steer(speed, FORWARD, steer);
-                    //}
+                 //   }                       
                      break;
                 case 14: // turn 180 deg for double green squares 
                     serialEvent5();
@@ -481,7 +512,6 @@ void loop() {
                 digitalWrite(LED_ROJO, LOW);
                 delay(200); 
             }
-            
             // Here the code for RESCUE
         }
     }
