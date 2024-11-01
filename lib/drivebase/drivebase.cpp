@@ -62,6 +62,12 @@ void Moto::updatePulse()
     _rpmlist[1] = _rpmlist[2];
     _rpmlist[2] = _rpmlist[3];
     _rpmlist[3] = _end - _begin;
+    pulseCount ++;
+}
+
+void Moto::resetPulseCount()
+{
+    pulseCount = 0;
 }
 
 void Moto::reset() {

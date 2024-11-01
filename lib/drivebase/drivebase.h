@@ -15,11 +15,13 @@ public:
     double getSpeed();
     double setSpeed(int dir, double rpm);
     void updatePulse();
+    void resetPulseCount();
     double getPWM();
     void reset();
 
 
 private:
+    long pulseCount; 
     int _pwmPin, _dirPin, _encPin;
     int _nAvg; // samples to take for speed computation
     int _dir;  // direction of rotation for setSpeed

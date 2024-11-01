@@ -67,7 +67,7 @@ VL53L0X right_tof; // Sensor 2
 int distance_left_tof;
 int distance_right_tof;
 #define SONAR_NUM 3     // Number of sensors.
-#define MAX_DISTANCE 150 // Maximum distance (in cm) to ping.
+#define MAX_DISTANCE 50 // Maximum distance (in cm) to ping.
 
 NewPing sonar[SONAR_NUM] = {     // Sensor object array.
     NewPing(8, 9, MAX_DISTANCE), // Each sensor's trigger pin, echo pin, and max distance to ping.
@@ -339,9 +339,9 @@ void runAngle(int speed, int dir, double angle)
 
 #define TARGET_DISTANCE 10.0 // distancia deseada en cm
 #define KP_DISTANCE 0.1      // constante proporcional para la distancia
-#define KP_ANGLE 0.05        // constante proporcional para el ángulo de rotación
+#define KP_ANGLE 0.1        // constante proporcional para el ángulo de rotación
 #define MAX_STEER 1        // valor máximo de steer permitido
-#define ANGLE_THRESHOLD 2.0 // umbral de inclinación en grados (yaw)
+#define ANGLE_THRESHOLD 3.0 // umbral de inclinación en grados (yaw)
 #define TARGET_ANGLE 0       // ángulo objetivo (robot paralelo a la pared)
 float yaw = 0;     // Ángulo de rotación (yaw)
 
@@ -382,6 +382,7 @@ void resetear_bno(){
 }
 
 void avance_recto(){
+    leer_ultrasonidos();
     leer_yaw();
     // Calcular el error de ángulo correctamente con la función circular
     float angle_error = calcularDiferenciaAngulo(yaw, TARGET_ANGLE);  // Diferencia angular ajustada
@@ -393,7 +394,7 @@ void avance_recto(){
         if (steer < -MAX_STEER) steer = -MAX_STEER;
 
         // Mover el robot con la corrección de ángulo
-        robot.steer(30, FORWARD, steer);
+        robot.steer(20, FORWARD, steer);
         
         // Imprimir para depuración
         Serial.print("Corrigiendo con ángulo. Steer: ");
@@ -614,8 +615,6 @@ void loop()
 
                     runTime(0, FORWARD, 0, 2000);
                     resetear_bno();
-                    runTime(20, BACKWARD, 0, 300);
-                    runTime(20, FORWARD, 0, 300);
                     runTime(30, FORWARD, 0, 2000);
                     leer_ultrasonidos();
                     if (left_distance != 0 && right_distance != 0 && right_distance < left_distance)
@@ -692,8 +691,8 @@ void loop()
             // Here the code for RESCUE
             while (j < 3 && digitalRead(32) == 0)
             {
-                leer_ultrasonidos();
-                avance_recto();
+                 avance_recto();
+
                 if (front_distance < 12 && front_distance != 0)
                 {
                     runTime(0, FORWARD, 0, 2000);
@@ -701,73 +700,52 @@ void loop()
 
                     if (color_detected == "Negro")
                     {
-                        if(j == 2){
-                            while (digitalRead(32) == 0)
-                            {
-                                robot.steer(0,FORWARD, 0);
-                            }
-                        }
-                        if (j!=2){
-                            runTime(35, BACKWARD, 0, 200);
-                            claw.lift();
-                            digitalWrite(LED_BUILTIN, HIGH);
-                            digitalWrite(BUZZER, HIGH);
-                            digitalWrite(LED_ROJO, HIGH);
-                            delay(100);
-                            digitalWrite(LED_BUILTIN, LOW);
-                            digitalWrite(BUZZER, LOW);
-                            digitalWrite(LED_ROJO, LOW);
-                            delay(100);
-                            runTime(35, BACKWARD, 0, 2000);
-                            esquinas_negro[j] = 1;
-                            claw.lower();
-                            leer_ultrasonidos();
-                            if (left_distance != 0 && right_distance != 0) 
-                            {
-                                if (left_distance < right_distance)
-                                {
-                                    runAngle(35, FORWARD, 45);
-                                    runTime(35, FORWARD, 0, 3000);
-                                    runAngle(35, FORWARD, 45);
-                                    resetear_bno();
-                                    j++;
-                                }
+                        claw.lift();
+                        digitalWrite(LED_BUILTIN, HIGH);
+                        digitalWrite(BUZZER, HIGH);
+                        digitalWrite(LED_ROJO, HIGH);
+                        delay(100);
+                        digitalWrite(LED_BUILTIN, LOW);
+                        digitalWrite(BUZZER, LOW);
+                        digitalWrite(LED_ROJO, LOW);
+                        delay(100);
 
-                                else
-                                {
-                                    runAngle(35, FORWARD, -45);
-                                    runTime(35, FORWARD, 0, 3000);
-                                    runAngle(35, FORWARD, -45);
-                                    resetear_bno();
-                                    j++;
-                                }
-                            }
+                        runTime(35, BACKWARD, 0, 2500);
+                        esquinas_negro[j] = 1;
+                        claw.lower();
+                        leer_ultrasonidos();
+
+                        if (left_distance > right_distance)
+                        {
+                            runAngle(35, FORWARD, 45);
+                            runTime(35, FORWARD, 0, 3000);
+                            runAngle(35, FORWARD, 45);
+                            j++;
+                        }
+
+                        else
+                        {
+                            runAngle(35, FORWARD, -45);
+                            runTime(35, FORWARD, 0, 3000);
+                            runAngle(35, FORWARD, -45);
+                            j++;
                         }
                     }
+
                     else
                     {
                         leer_ultrasonidos();
                         if (front_distance < 12 && front_distance != 0)
                         {
-                            if (left_distance != 0 && right_distance != 0) 
+                            if (left_distance < right_distance)
                             {
-                                if(left_distance > right_distance){
-                                runTime(35, BACKWARD, 0, 1000);
-                                runAngle(35, FORWARD, -45);
-                                runTime(35, FORWARD, 0, 1000);
-                                runAngle(35, FORWARD, -45);
-                                resetear_bno();
+                                runAngle(20, FORWARD, -89);
                                 j++;
-                                }
-                                else
-                                {
-                                    runTime(35, BACKWARD, 0, 1000);
-                                    runAngle(35, FORWARD, 45);
-                                    runTime(35, FORWARD, 0, 1000);
-                                    runAngle(35, FORWARD, 45);
-                                    resetear_bno();
-                                    j++;
-                                }
+                            }
+                            else
+                            {
+                                runAngle(20, FORWARD, 89);
+                                j++;
                             }
                         }
                     }
@@ -798,6 +776,7 @@ void loop()
                     leer_ultrasonidos();
                     if (left_distance != 0 && right_distance != 0 && right_distance < left_distance)
                     {
+
                         runAngle(40, FORWARD, 90);
                     }
                     else
