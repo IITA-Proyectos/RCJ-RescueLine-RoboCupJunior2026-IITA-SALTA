@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "VL53L1X.h"
+#include "VL53L0X.h"
 #include "lidar.h"
 
 Lidar::Lidar(TwoWire *bus)
