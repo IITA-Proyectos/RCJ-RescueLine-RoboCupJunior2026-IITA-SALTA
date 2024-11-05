@@ -48,7 +48,7 @@ double speed;          // speed (0 to 100)
 double steer;          // angle (0 to 180 deg, will -90 later)
 int green_state = 0;   // 0 = no green squares, 1 = left, 2 = right, 3 = double
 int silver_line = 0;   // if there is a line to reacquire after obstacle
-int action;            // action to take (part of a task)
+int action =7;            // action to take (part of a task)
 bool taskDone = false; // if true, update current_task
 int angle0;            // initial IMU reading
 bool startUp = false;
@@ -619,9 +619,6 @@ void loop()
                     digitalWrite(BUZZER, HIGH);
                     delay(100);
                     digitalWrite(BUZZER, LOW);
-                    leer_ultrasonidos();
-                    if (front_distance != 0 && front_distance < 12)
-                    {
                         RanNumber = random(3);
                         RanNumber = random(1, 3);
                         if (RanNumber == 1)
@@ -654,10 +651,9 @@ void loop()
                                 }
                             }
                         }
-                    }
+                    
                     break;
                 case 2:
-
                     runTime(0, FORWARD, 0, 500);
                     for (int i = 0; i < 2; i++)
                     {
@@ -707,7 +703,7 @@ void loop()
                 case 7: // linetrack
                     if (steer < -0.7 || steer > 0.7)
                     {
-                        robot.steer(40, FORWARD, steer);
+                        robot.steer(55, FORWARD, steer);
                     }
 
                     else
@@ -774,7 +770,7 @@ void loop()
                             digitalWrite(BUZZER, LOW);
                             digitalWrite(LED_ROJO, LOW);
                             delay(100);
-                            runTime(35, BACKWARD, 0, 1500);
+                            runTime(35, BACKWARD, 0, 2000);
                             esquinas_negro[j] = 1;
                             claw.lower();
                             leer_ultrasonidos();
