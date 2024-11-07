@@ -82,8 +82,12 @@ while True:
     if len(green_contours) == 1:
         if np.mean(x_green) < 0:  # turn left
             green_state = 1
+            speed = 30
+            angle = 45
         else:
             green_state = 2  # turn right
+            speed = 30
+            angle = -45
 
     if len(green_contours) == 2:
         green_state = 3
@@ -100,7 +104,7 @@ while True:
     silver_line = False
     for contour in silver_contours:
         area = cv2.contourArea(contour)
-        if area > 150:  # Define un umbral para el área para evitar ruido
+        if area > 2:  # Define un umbral para el área para evitar ruido
             silver_line = True
             break
 

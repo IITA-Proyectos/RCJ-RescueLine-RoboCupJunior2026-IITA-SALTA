@@ -595,7 +595,7 @@ void loop()
                 }
                 if (green_state == 1)
                 {
-                    action = 6; // verde izquierda
+                    action = 6; // verde izquierda  
                 }
                 if (green_state == 2)
                 {
