@@ -59,7 +59,7 @@ bool first_rescate = 1;
 String wall = "right";
 bool esquinas_negro[3];
 bool final_rescate = 1;
-
+bool lectura =0;
 int cccounter,
     leftLidarReading, rightLidarReading;
 VL53L0X left_tof;  // Sensor 1
@@ -835,6 +835,33 @@ void loop()
                     digitalWrite(BUZZER, LOW);
                     delay(200);
                     robot.steer(0, FORWARD, 0);
+                    leer_tof(); 
+                if (distance_left_tof < distance_right_tof)
+                {   
+                    leer_tof();
+                    runTime(35,BACKWARD,0,2300);
+                    runAngle(35,FORWARD,36);
+                    while(get_color()=="Blanco"){
+                        robot.steer(30,FORWARD,0);       
+                    }
+
+                }
+                leer_tof();
+                if (distance_right_tof <distance_left_tof )
+                {
+                    leer_tof();
+                    runTime(35,BACKWARD,0,2300);
+                    runAngle(35,FORWARD,-36);
+                    leer_ultrasonidos();
+                    while(get_color()=="Blanco" && front_distance!=0 && front_distance>20){
+                        leer_ultrasonidos();
+                        robot.steer(30,FORWARD,0);
+                    }
+
+                }
+                    digitalWrite(BUZZER,HIGH);
+                    delay(200);
+                    digitalWrite(BUZZER,LOW);
                     final_rescate = 0;
                 }
                 if (esquinas_negro[1] == 1 && final_rescate == 1)
@@ -849,26 +876,38 @@ void loop()
                     digitalWrite(BUZZER, LOW);
                     delay(200);
                     leer_ultrasonidos();
-                    if (left_distance != 0 && right_distance != 0)
+                    leer_tof();
+                    if (distance_left_tof <distance_right_tof )
                     {
-                        if (left_distance < right_distance)
-                        {
-                            runAngle(35, FORWARD, 180); // Gira 180
-                            runAngle(35, FORWARD, -45);
-                            runTime(35, FORWARD, 0, 3000);
-                            runAngle(35, FORWARD, -45);
-                            resetear_bno();
-                            leer_ultrasonidos();
-                            while (front_distance != 0 && front_distance < 12 && digitalRead(32) == 0)
-                            {
-                                leer_ultrasonidos();
-                                avance_recto(wall);
-                            }
-                        }
-                        else
-                        {
-                        }
+                    runAngle(30,FORWARD,-2);
+                    while(front_distance!=0 && front_distance>12 && digitalRead(32)==0){
+                        leer_ultrasonidos();
+                        robot.steer(30,FORWARD,0);                        
                     }
+                    runAngle(30,FORWARD,148);
+                    while (get_color()=="Blanco")
+                    {
+                        robot.steer(30,FORWARD,0);
+                    }
+
+                    }
+                    leer_tof();
+                    if (distance_right_tof <distance_left_tof ){                    
+                    runAngle(30,FORWARD,2);
+                    while(front_distance!=0 && front_distance>12 && digitalRead(32)==0){
+                        leer_ultrasonidos();
+                        robot.steer(30,FORWARD,0);                        
+                    }
+                    runAngle(30,FORWARD,-148);
+                    leer_ultrasonidos();
+                    while (get_color()=="Blanco" &&front_distance!=0 && front_distance>12 )
+                    {
+                        robot.steer(30,FORWARD,0);
+                    }
+                    }
+                    digitalWrite(BUZZER,HIGH);
+                    delay(200);
+                    digitalWrite(BUZZER,LOW);
                     final_rescate = 0;
                 }
             }

@@ -83,7 +83,7 @@ while True:
         if np.mean(x_green) < 0:  # turn left
             green_state = 1
             speed = 30
-            angle = 45
+            angle = 45  
         else:
             green_state = 2  # turn right
             speed = 30
