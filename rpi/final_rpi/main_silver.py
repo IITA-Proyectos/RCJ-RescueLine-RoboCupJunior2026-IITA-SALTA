@@ -6,33 +6,33 @@ import time
 import serial
 
 debugOriginal = True
-debugBlack =True
+debugBlack = True
 debugGreen = True
 debugBlue = True
-debugHori=True
+debugHori = True
 record = False
 noise_blob_threshold = 16
-min_square_size = 150
+min_square_size = 50
 
 vs = WebcamVideoStream(src=0).start()
 ser = serial.Serial('/dev/serial0', 115200)
-lower_black = np.array([0, 0,0])  # BGR
-upper_black = np.array([70, 70, 70])
-lower_green = np.array([0, 100, 80])  # lab
-upper_green = np.array([255, 120, 150])
-lower_silver_hsv = np.array([20,20,75])  # Valores en espacio HSV para detectar el plateado
+lower_black = np.array([20, 5,5])  # BGR
+upper_black = np.array([90, 65, 50])
+lower_green = np.array([75,85, 95])  # lab
+upper_green = np.array([125,117,145])
+lower_silver_hsv = np.array([20, 20, 75])  # Valores en espacio HSV para detectar el plateado
 upper_silver_hsv = np.array([40, 60, 190])  # Ajusta estos valores si es necesario
 
 test_frame = vs.read()
-width, height = test_frame.shape[1], test_frame.shape[0]
+width, height = 160, 120  
 print(width, height)
 
 cam_x = width / 2 - 1   # 79 ~ middle column
 cam_y = height - 1      # 119 ~ bottom row
 
 timer_active = False
-green_output_duration = 1  # Duración en segundos para mostrar el estado
-green_output_cooldown_duration = 2  # Duración en segundos para estar en 0
+green_output_duration = 1  # DuraciÃ³n en segundos para mostrar el estado
+green_output_cooldown_duration = 2  # DuraciÃ³n en segundos para estar en 0
 green_state_final = 0
 timer_active = False
 timer_start_time = 0
@@ -47,20 +47,25 @@ for i in range(height):
         x_com[i][j] = (j - cam_x) / (width / 2)   # [-1, 1]
         y_com[i][j] = (cam_y - i) / height        # [0, 1]
 
-
 while True:
     frame = vs.read()
-    frame[:50, :, :] = 255          # ignore top 1/8 of frame
+    frame = cv2.rotate(frame, cv2.ROTATE_180)
+
+    frame_resized = cv2.resize(frame, (160, 120), interpolation=cv2.INTER_NEAREST)
+
+    # Luego, recortar la parte superior
+    frame_resized[:50, :, :] = 255  # Ignorar la parte superior de la imagen (1/8 superior)
+
     kernel = np.ones((3, 3), np.uint8)
-    lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+    lab = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2LAB)
 
     # FILTER BLACK PIXELS
-    black_mask = cv2.inRange(frame, lower_black, upper_black)
+    black_mask = cv2.inRange(frame_resized, lower_black, upper_black)
     x_black = cv2.bitwise_and(x_com, x_com, mask=black_mask)
     x_black *= (1 - y_com)
     y_black = cv2.bitwise_and(y_com, y_com, mask=black_mask)
 
-    green_mask = cv2.inRange(lab[90:, :, :], lower_green, upper_green)    # shape = (30, 160)
+    green_mask = cv2.inRange(lab[50:, :, :], lower_green, upper_green)  # shape = (30, 160)
 
     # CALCULATE RESULTANT
     green_state = 0
@@ -71,12 +76,12 @@ while True:
 
     if np.sum(green_mask) > min_square_size * 255:
 
-        green_pixels = np.amax(green_mask, axis = 0)    # for every column, if green: 1 else 0, shape = (160,)
-           
+        green_pixels = np.amax(green_mask, axis=0)  # for every column, if green: 1 else 0, shape = (160,)
+
         greenIndices = np.where(green_pixels == np.max(green_pixels))   # get indices of columns that have green
         leftIndex = greenIndices[0][0]
         rightIndex = greenIndices[0][-1]
-        slicedGreen = frame[60:90, leftIndex:rightIndex + 1, :]
+        slicedGreen = frame_resized[60:90, leftIndex:rightIndex + 1, :]
 
         greenCentroidX = (rightIndex + leftIndex) / 2
         slicedBlackMaskAboveGreen = black_mask[60:90, leftIndex:rightIndex + 1]
@@ -85,20 +90,18 @@ while True:
         if np.sum(black_mask[90:, :]):  # if there is black, prevents divide by 0 error
             cx_black = int(blackM["m10"] / blackM["m00"])   # get x-value of black centroid
 
-        if (np.sum(slicedBlackMaskAboveGreen) / (255 * 30 * (rightIndex - leftIndex))) > 0.32:   # if mean is high -> square before line
+        if (np.sum(slicedBlackMaskAboveGreen) / (255 * 30 * (rightIndex - leftIndex))) > 0.32:  # if mean is high -> square before line
             greenSquare = False
             filtered_green_mask = cv2.erode(green_mask, kernel)
             filtered_green_mask = cv2.dilate(green_mask, kernel)
             green_contours, hierarchy = cv2.findContours(filtered_green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             if len(green_contours) > 1 and cx_black > leftIndex and cx_black < rightIndex and np.sum(green_mask) > (2 * min_square_size * 255):
                 green_state = 3
-                
-            elif greenCentroidX < cx_black:
 
+            elif greenCentroidX < cx_black:
                 green_state = 1
 
             else:
-
                 green_state = 2
 
         else:
@@ -110,7 +113,7 @@ while True:
         green_state = 0
 
     # DETECTION OF SILVER LINE (IN HSV)
-    hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)  # Convertir la imagen de BGR a HSV
+    hsv_frame = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2HSV)  # Convertir la imagen de BGR a HSV
     silver_mask = cv2.inRange(hsv_frame, lower_silver_hsv, upper_silver_hsv)
 
     silver_contours, _ = cv2.findContours(silver_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -118,7 +121,7 @@ while True:
     silver_line = False
     for contour in silver_contours:
         area = cv2.contourArea(contour)
-        if area > 800:  # Define un umbral para el área para evitar ruido
+        if area > 2000:  # Define un umbral para el Ã¡rea para evitar ruido
             silver_line = True
             break
 
@@ -126,14 +129,14 @@ while True:
     output = [255, speed,
               254, round(angle) + 90,
               253, green_state,
-              252, int(silver_line)]  # 1 si se detecta la línea plateada, 0 en caso contrario
+              252, int(silver_line)]  # 1 si se detecta la lÃ­nea plateada, 0 en caso contrario
 
     print(output)
     ser.write(output)
 
     # DEBUGS
     if debugOriginal:
-        cv2.imshow('Original', frame)
+        cv2.imshow('Original', frame_resized)
     if debugBlack:
         cv2.imshow('Black Mask', black_mask)
     if debugGreen:
