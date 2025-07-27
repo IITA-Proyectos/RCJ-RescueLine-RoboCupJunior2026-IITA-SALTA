@@ -14,11 +14,12 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 
+
 // SERVOS
-DFServo sort(20, 540, 2390, 274);
+DFServo sort(22, 540, 2390, 274);
 DFServo left(14, 540, 2390, 274);
-DFServo right(21, 540, 2390, 274);
-DFServo lift(22, 540, 2390, 274);
+DFServo right(15, 540, 2390, 274);
+DFServo lift(12, 540, 2390, 274);
 DFServo deposit(23, 540, 2390, 274);
 Claw claw(&lift, &left, &right, &sort, &deposit);
 
@@ -41,6 +42,8 @@ Moto fr(4, 3, 2);
 DriveBase robot(&fl, &fr, &bl, &br);
 // STATE VARIABLES & FLAGS //
 String color_detected;
+static unsigned long lastTurn = 0;           // persiste entre iteraciones
+const unsigned long turnCooldown = 600;      // ms (ajusta)
 int counter = 0;
 int laststeer = 0;
 int serial5state = 0;  // serial code e.g. 255
@@ -48,6 +51,7 @@ double speed;          // speed (0 to 100)
 double steer;          // angle (0 to 180 deg, will -90 later)
 int green_state = 0;   // 0 = no green squares, 1 = left, 2 = right, 3 = double
 int silver_line = 0;   // if there is a line to reacquire after obstacle
+int servo = 0;
 int action =7;            // action to take (part of a task)
 bool taskDone = false; // if true, update current_task
 int angle0;            // initial IMU reading
@@ -134,7 +138,7 @@ Color known_colors[] = {
     {"Blanco", 24, 31, 39, 113},
     {"Negro", 2, 2, 3, 9},
     {"Verde", 3, 10, 7, 28},
-    {"Plateado", 19, 20, 36, 100}};
+    {"Plateado",16, 22, 25, 77}};
 
 // Función para leer los valores del sensor y determinar el color
 String get_color()
@@ -232,6 +236,7 @@ void runTime(int speed, int dir, double steer, unsigned long long time)
 
         if (digitalRead(32) == 1)
         { // switch is off
+            Serial5.clear();
             Serial5.write(255);
             break;
         }
@@ -257,6 +262,7 @@ void runAngle(int speed, int dir, double angle)
         float currentAngle = event.orientation.x;
         if (digitalRead(32) == 1)
         { // switch is off
+            Serial5.clear();
             Serial5.write(255);
             break;
         }
@@ -343,20 +349,41 @@ void runAngle(int speed, int dir, double angle)
 #define ANGLE_THRESHOLD 2.0  // umbral de inclinación en grados (yaw)
 #define TARGET_ANGLE 0       // ángulo objetivo (robot paralelo a la pared)
 float yaw = 0;               // Ángulo de rotación (yaw)
-
+float pitch=0;
 void leer_yaw()
 {
     sensors_event_t event;
     bno.getEvent(&event);
     yaw = event.orientation.x; // Yaw es el ángulo de rotación (en grados)
 }
-
+void leer_pitch()
+{
+    sensors_event_t event;
+    bno.getEvent(&event);
+    pitch = event.orientation.y; // Yaw es el ángulo de rotación (en grados)
+}
 void imprimir_yaw()
 {
     Serial.print("Yaw: ");
     Serial.println(yaw);
 }
+int ajustarVelocidadPorPendiente(int velocidadBase)
+{
+    leer_pitch();
 
+    int velocidadAjustada = velocidadBase;
+    if (pitch > 10) 
+    {
+            velocidadAjustada = 35;
+    }
+    else if (pitch < -10)
+    {
+ 
+            velocidadAjustada = 15; // velocidad mínima para no frenarse demasiado
+    }
+
+    return velocidadAjustada;
+}
 // Función para calcular la diferencia de ángulo en un rango circular de 0 a 360 grados
 float calcularDiferenciaAngulo(float anguloActual, float anguloObjetivo)
 {
@@ -446,6 +473,7 @@ void lado_pared()
     }
 }
 
+
 void setup()
 {
     robot.steer(0, 0, 0);
@@ -458,6 +486,7 @@ void setup()
     pinMode(BUZZER, OUTPUT);       // BUZZER
     pinMode(LED_ROJO, OUTPUT);     // LED ROJO
     pinMode(LED_BUILTIN, OUTPUT);  //  LED BUILT-IN for debugging
+    digitalWrite(0, HIGH);
     Serial1.begin(57600);          // for reading IMU
     Serial5.begin(115200);         // for reading data from rpi and state
     Serial.begin(115200);          // displays ultrasound ping result
@@ -508,6 +537,7 @@ void loop()
     {                               // switch is off
         robot.steer(0, FORWARD, 0); // stop moving
         claw.lift();
+        Serial5.clear();
         esquinas_negro[0] = 0;
         esquinas_negro[1] = 0;
         esquinas_negro[2] = 0;
@@ -609,10 +639,12 @@ void loop()
                 {
                     action = 1;
                 }
+                if(green_state==4){action=8;}
                 if (silver_line == 1)
                 {
                     action = 2;
                 }
+
                 switch (action)
                 {
                 case 1:
@@ -631,7 +663,7 @@ void loop()
                                 // serialEvent5();
                                 if (get_color() == "Negro")
                                 {
-                                    runAngle(30, FORWARD, -90);
+                                    runAngle(30, FORWARD, -115);
                                     break;
                                 }
                             }
@@ -646,7 +678,7 @@ void loop()
                                 // serialEvent5();
                                 if (get_color() == "Negro")
                                 {
-                                    runAngle(30, FORWARD, 90);
+                                    runAngle(30, FORWARD, 115);
                                     break;
                                 }
                             }
@@ -654,35 +686,13 @@ void loop()
                     
                     break;
                 case 2:
-                    runTime(0, FORWARD, 0, 500);
-                    for (int i = 0; i < 2; i++)
-                    {
-                        digitalWrite(LED_BUILTIN, HIGH);
-                        digitalWrite(BUZZER, HIGH);
-                        digitalWrite(LED_ROJO, HIGH);
-                        delay(200);
-                        digitalWrite(LED_BUILTIN, LOW);
-                        digitalWrite(BUZZER, LOW);
-                        digitalWrite(LED_ROJO, LOW);
-                        delay(200);
+                    runTime(13,FORWARD,0,100);
+                    if(get_color()=="Plateado"){
+                        runTime(0,0,0,2000);
                     }
-                    runTime(30, FORWARD, -1, 100); // Solo para acomodar
-                    runTime(0, FORWARD, 0, 500);
-                    resetear_bno(); // chequear que con el acomodo queda recto a la entrada
-                    runTime(20, BACKWARD, 0, 300);
-                    runTime(20, FORWARD, 0, 300);
-                    runTime(30, FORWARD, 0, 2000);
-                    leer_ultrasonidos();
-                    leer_tof();
-                    if (distance_right_tof < distance_left_tof)
-                    {
-                        wall = "right";
-                    }
-                    if (distance_left_tof < distance_right_tof)
-                    {
-                        wall = "left";
-                    }
-                    rutina = "rescate";
+                    else{
+                        Serial5.write(249);
+                        action=7;}
                     break;
                 case 6:
                     runTime(20, FORWARD, 0, 800);
@@ -701,25 +711,56 @@ void loop()
                     }
                     break;
                 case 7: // linetrack
-                    if (steer < -0.7 || steer > 0.7)
+                
+                    {int velocidadAjustada = ajustarVelocidadPorPendiente(13);
+
+                     if (steer < -0.7 || steer > 0.7)
                     {
-                        robot.steer(55, FORWARD, steer);
+                            robot.steer(55, FORWARD, steer);
                     }
 
                     else
                     {
-                        robot.steer(speed, FORWARD, steer);
+                        robot.steer(velocidadAjustada, FORWARD, steer);
                     }
+                
+                    break;
+                    }
+                case 8: // linea cortada o 135
+                robot.steer(0,FORWARD,0);
+                runTime(13,BACKWARD,0,200);
+                    while (true) {
+                        robot.steer(0,FORWARD,0);
+                        serialEvent5(); // actualizar green_state
+                        if (green_state == 6) {
+                            runTime(13,FORWARD,0,800);
+                            runAngle(13, FORWARD, 120); // giro derecha
+                            break;
+                        }
+                        else if (green_state == 5) {
+                            runTime(13,FORWARD,0,800);
+                            runAngle(13, FORWARD, -120); // giro izquierda
+                            break;
+                        }
+                        else if (green_state == 7) {
+                            robot.steer(speed,FORWARD,steer);
+                            break;
+                        }
+                    }
+                    action=7;
                     break;
                 case 14: // turn 180 deg for double green squares
                     serialEvent5();
                     if (green_state == 3)
                     {
                         runAngle(30, FORWARD, 180);
+                        runTime(30, BACKWARD, 0, 200);
                     }
                     action = 7;
                     break;
+
                 }
+
             }
         }
         while (rutina == "rescate" && digitalRead(32) == 0)
