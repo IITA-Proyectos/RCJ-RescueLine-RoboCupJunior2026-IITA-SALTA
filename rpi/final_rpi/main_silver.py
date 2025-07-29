@@ -165,13 +165,11 @@ while True:
                     green_state = 5  # Giro a izquierda
                     output = [255, speed, 254, 90, 253, green_state, 252, 0]
                     ser.write(output)
-             
                     break
                 if np.sum(right_black_mask) > np.sum(left_black_mask) and np.sum(right_black_mask) > 3000:
                     green_state = 6  # Giro a derecha
                     output = [255, speed, 254, 90, 253, green_state, 252, 0]
                     ser.write(output)
-
                     break
                 cv2.waitKey(1)
     output = [255, speed,
