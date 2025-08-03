@@ -35,10 +35,10 @@ bool retroceder = false;  // Para saber si debe retroceder
 // INITIALISE BNO055 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 // INITIALISE ACTUATORS //
-Moto bl(29, 28, 27); // pwm, dir, enc
-Moto fl(7, 6, 5);
-Moto br(36, 37, 38);
-Moto fr(4, 3, 2);
+Moto bl(29, 28, 27, "BL"); // pwm, dir, enc
+Moto fl(7, 6, 5, "FL");
+Moto br(36, 37, 38, "BR");
+Moto fr(4, 3, 2, "FR");
 DriveBase robot(&fl, &fr, &bl, &br);
 // STATE VARIABLES & FLAGS //
 String color_detected;
@@ -191,6 +191,12 @@ void ISR1() { bl.updatePulse(); }
 void ISR2() { fl.updatePulse(); }
 void ISR3() { br.updatePulse(); }
 void ISR4() { fr.updatePulse(); }
+void reset_enconder(){
+    bl.resetPulseCount();
+    fl.resetPulseCount();
+    br.resetPulseCount();
+    fr.resetPulseCount();
+}
 
 // Read Data from Raspberry by Serial TX-RX
 void serialEvent5()
@@ -473,7 +479,69 @@ void lado_pared()
     }
 }
 
-
+void runDistance(int speed, int dir, int Distance) {
+    reset_enconder();
+    int encoder = 25*Distance;
+    
+    if (dir == FORWARD) {
+        while (fr.pulseCount <= encoder && fl.pulseCount <= encoder) {
+            robot.steer(speed, dir, 0);
+            Serial.print("FL: ");
+            Serial.print(fl.pulseCount); // Imprime el valor de pulseCount
+            Serial.print(" | ");
+            Serial.print("FR: ");
+            Serial.println(fr.pulseCount);
+            digitalWrite(13, HIGH);
+            delay(10);
+            
+            if (Serial5.available() > 0) {
+                int lecturas = Serial5.read();
+                Serial.print(lecturas);
+            }
+            
+            if (digitalRead(32) == 1) { // switch is off
+                Serial5.write(255);
+                break;
+            }
+        }
+    }else{
+        while (fr.pulseCount >= -encoder && fl.pulseCount >= -encoder)
+        {
+            robot.steer(speed, dir, 0);
+            Serial.print("FL: ");
+            Serial.print(fl.pulseCount); // Imprime el valor de pulseCount
+            Serial.print(" | ");
+            Serial.print("FR: ");
+            Serial.println(fr.pulseCount);
+            delay(10);
+        }
+        
+        
+    }
+    /*
+    if (dir == BACKWARD) {
+        while (fr.pulseCount >= encoder && fl.pulseCount >= encoder) {
+            robot.steer(speed, dir, 0);
+            Serial.print("FL: ");
+            Serial.print(fl.pulseCount); // Imprime el valor de pulseCount
+            Serial.print(" | ");
+            Serial.print("FR: ");
+            Serial.println(fr.pulseCount);
+            digitalWrite(13, HIGH);
+            
+            if (Serial5.available() > 0) {
+                int lecturas = Serial5.read();
+                Serial.print(lecturas);
+            }
+            
+            if (digitalRead(32) == 1) { // switch is off
+                Serial5.write(255);
+                break;
+            }
+        }
+    } 
+    */
+}
 void setup()
 {
     robot.steer(0, 0, 0);
@@ -683,7 +751,7 @@ void loop()
                                 }
                             }
                         }
-                    
+                    Serial5.write(byte(255));
                     break;
                 case 2:
                     runTime(13,FORWARD,0,100);
@@ -695,20 +763,17 @@ void loop()
                         action=7;}
                     break;
                 case 6:
-                    runTime(20, FORWARD, 0, 800);
-                    serialEvent5();
-                    if (green_state == 1)
-                    {
-                        runAngle(35, FORWARD, -60);
-                    }
+                runDistance(20,FORWARD,4);
+
+                        runAngle(20, FORWARD, -60);
+                    Serial5.write(byte(255));
                     break;
                 case 5:
-                    runTime(20, FORWARD, 0, 800);
-                    serialEvent5();
-                    if (green_state == 2)
-                    {
-                        runAngle(25, FORWARD, 60);
-                    }
+                runDistance(20,FORWARD,4);
+
+                runAngle(20, FORWARD, 60);
+
+                    Serial5.write(byte(255));
                     break;
                 case 7: // linetrack
                 
@@ -735,15 +800,17 @@ void loop()
                         if (green_state == 6) {
                             runTime(13,FORWARD,0,800);
                             runAngle(13, FORWARD, 120); // giro derecha
+                            runDistance(20,FORWARD,1);
                             break;
                         }
                         else if (green_state == 5) {
                             runTime(13,FORWARD,0,800);
-                            runAngle(13, FORWARD, -120); // giro izquierda
+                            runAngle(13, FORWARD, -120);
+                            runDistance(20,FORWARD,1); // giro izquierda
                             break;
                         }
                         else if (green_state == 7) {
-                            robot.steer(speed,FORWARD,steer);
+                            runTime(25,FORWARD,0,2000);
                             break;
                         }
                     }
@@ -757,6 +824,7 @@ void loop()
                         runTime(30, BACKWARD, 0, 200);
                     }
                     action = 7;
+                    Serial5.write(byte(255));
                     break;
 
                 }
