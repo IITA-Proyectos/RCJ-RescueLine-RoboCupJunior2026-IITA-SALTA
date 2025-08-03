@@ -9,12 +9,12 @@ import sys
 debugOriginal = True
 debugBlack = True
 debugGreen = True
-debugBlue = False
+debugBlue = True
 debugHori = True
 record = False
 noise_blob_threshold = 16
 min_square_size = 150
-min_line_size =25000
+min_line_size =6000
 fixed_angle_value = 0
 fixed_angle_active = False
 fixed_angle_start_time = 0
@@ -129,19 +129,7 @@ while True:
         green_state = 0
 
 
-
-
-    silver_contours, _ = cv2.findContours(silver_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    silver_line = False
-    for contour in silver_contours:
-        area = cv2.contourArea(contour)
-        #print(area)
-
-        if area > 1500 :  # Define un umbral para el ÃƒÂ¡rea para evitar ruido
-            silver_line = True
-            break
-    if np.sum(black_mask)<min_line_size:
+    if np.sum(black_mask)<min_line_size and green_state==0:
             green_state=4
             output = [255, speed,
                 254, round(angle) + 90 ,
@@ -171,14 +159,30 @@ while True:
                     output = [255, speed, 254, 90, 253, green_state, 252, 0]
                     ser.write(output)
                     break
+                else:
+                    output = [255, speed, 254, 90, 253, 7, 252, 0]
+                    break
                 cv2.waitKey(1)
+
+    silver_contours, _ = cv2.findContours(silver_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    silver_line = False
+    for contour in silver_contours:
+        area = cv2.contourArea(contour)
+        #print(area)
+
+        if area > 1500 :  # Define un umbral para el ÃƒÂ¡rea para evitar ruido
+            silver_line = True
+            break
     output = [255, speed,
               254, round(angle) + 90 ,
               253, green_state,
-              252, int(0)]  # 1 si se detecta la lÃƒÂ­nea plateada, 0 en caso contrario
+              252, 0]  # 1 si se detecta la lÃƒÂ­nea plateada, 0 en caso contrario
 
     print(output)
     ser.write(output)
+
+
     #time.sleep(3)
     #print(np.sum(black_mask))
     # DEBUGS
