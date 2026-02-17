@@ -75,16 +75,11 @@ VL53L0X right_tof; // Sensor 2
 int distance_left_tof;
 int distance_right_tof;
 float angulo_rescate = 0;
-<<<<<<< HEAD
 float centrar = 0;
 String pared="";
 bool alineado=false;
 bool depositando=false;
 int veces_deposit=2;
-=======
-String pared="";
-bool alineado=false;
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
 int ball_counter=2;
 #define SONAR_NUM 3      // Number of sensors.
 #define MAX_DISTANCE 150 // Maximum distance (in cm) to ping.
@@ -365,11 +360,8 @@ void runAngle(int speed, int dir, double angle)
 
 
 void runDistance(int speed, int dir, int Distance) {
-<<<<<<< HEAD
     runTime(30,BACKWARD,0,20);
     runTime(30,FORWARD,0,20);
-=======
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
     reset_enconder();
     int encoder = 25*Distance;
     
@@ -380,11 +372,7 @@ void runDistance(int speed, int dir, int Distance) {
             Serial.print(fl.pulseCount); // Imprime el valor de pulseCount
             Serial.print(" | ");
             Serial.print("FR: ");
-<<<<<<< HEAD
             //Serial.println(fr.pulseCount);
-=======
-            Serial.println(fr.pulseCount);
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
             digitalWrite(13, HIGH);
             delay(10);
             
@@ -406,11 +394,7 @@ void runDistance(int speed, int dir, int Distance) {
             Serial.print(fl.pulseCount); // Imprime el valor de pulseCount
             Serial.print(" | ");
             Serial.print("FR: ");
-<<<<<<< HEAD
             //Serial.println(fr.pulseCount);
-=======
-            Serial.println(fr.pulseCount);
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
             delay(10);
         }
         
@@ -557,11 +541,7 @@ void setup()
     robot.steer(0, 0, 0);
     claw.lift();
     angulo_rescate = fmod(20, 360.0);
-<<<<<<< HEAD
     //Serial.println(angulo_rescate);
-=======
-    Serial.println(angulo_rescate);
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
     attachInterrupt(digitalPinToInterrupt(27), ISR1, CHANGE);
     attachInterrupt(digitalPinToInterrupt(5), ISR2, CHANGE);
     attachInterrupt(digitalPinToInterrupt(38), ISR3, CHANGE);
@@ -570,19 +550,11 @@ void setup()
     pinMode(BUZZER, OUTPUT);       // BUZZER
     pinMode(LED_ROJO, OUTPUT);     // LED ROJO
     pinMode(LED_BUILTIN, OUTPUT);  //  LED BUILT-IN for debugging
-<<<<<<< HEAD
     pinMode(RELAY, OUTPUT);           
 //Serial1.begin(57600);          // for reading IMU
     Serial5.begin(115200);         // for reading data from rpi and state
     delay(200);
     //Serial.begin(115200);          // displays ultrasound ping result
-=======
-    digitalWrite(0, HIGH);
-    Serial1.begin(57600);          // for reading IMU
-    Serial5.begin(115200);         // for reading data from rpi and state
-    delay(200);
-    Serial.begin(115200);          // displays ultrasound ping result
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
     // Initialise BNO055
     if (!bno.begin())
     {
@@ -746,13 +718,10 @@ void loop()
                     action = 1;
                 }
                 
-<<<<<<< HEAD
                 if (green_state == 14)
                 {
                     action = 12;
                 }
-=======
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
                 if (silver_line == 1)
                 {
                     action = 2;
@@ -804,13 +773,9 @@ void loop()
                     digitalWrite(BUZZER, LOW);
                     rutina="rescate";
                     ball_counter=0;
-<<<<<<< HEAD
                     veces_deposit = 0;
                     alineado=false;
                     depositando=false;
-=======
-                    alineado=false;
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
                     runTime(0, FORWARD, 0, 1000);
                      runTime(30,FORWARD,0,2000);
 
@@ -819,7 +784,6 @@ void loop()
                     leer_ultrasonidos();
                     if(left_distance < right_distance)
                     {
-<<<<<<< HEAD
                         /*runAngle(30,FORWARD,90);
                         runTime(0,BACKWARD,0,900);
                         runTime(40,BACKWARD,0,380);
@@ -832,50 +796,24 @@ void loop()
                         runTime(0,BACKWARD,0,1000);
                         runAngle(30,FORWARD,45);
                         runTime(30,FORWARD,0,3000);
-=======
-                        runAngle(30,FORWARD,90);
-                        runTime(0,BACKWARD,0,900);
-                        runTime(40,BACKWARD,0,380);
-                        runTime(40,FORWARD,0,800);
-                        runTime(0,BACKWARD,0,1000);
-                         angulo_rescate = leer_yaw();            
-                        angulo_rescate = fmod(angulo_rescate, 360.0);
-                        if (angulo_rescate < 0) angulo_rescate += 360;
-                        runAngle(30,FORWARD,-45);
-                        runTime(30,FORWARD,0,2000);
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
 
                         pared="left";
                         lado_plateado="derecha";
                     }
                     if(right_distance < left_distance)
                     {
-<<<<<<< HEAD
                        /* runAngle(30,FORWARD,-90);
                         runTime(0,BACKWARD,0,900);
                         runTime(60,BACKWARD,0,380);
                         runTime(40,FORWARD,0,800);*/
-=======
-                        runAngle(30,FORWARD,-90);
-                        runTime(0,BACKWARD,0,900);
-                        runTime(60,BACKWARD,0,380);
-                        runTime(40,FORWARD,0,800);
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
                         angulo_rescate = leer_yaw();            
                         angulo_rescate = fmod(angulo_rescate, 360.0); 
                         if (angulo_rescate < 0)                        
                         angulo_rescate += 360;
-<<<<<<< HEAD
                         runTime(20,FORWARD,0,1500);
                         runTime(0,BACKWARD,0,1000);
                         runAngle(30,FORWARD,-45);
                         runTime(30,FORWARD,0,3000);
-=======
-                        runTime(0,BACKWARD,0,1000);
-
-                        runAngle(30,FORWARD,45);
-                        runTime(30,FORWARD,0,2000);
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
                         pared="right";
                         lado_plateado="izquierda";
                     }
@@ -931,7 +869,6 @@ void loop()
                 
                     break;
                     }
-<<<<<<< HEAD
 
                case 12:
 {
@@ -969,8 +906,6 @@ while(digitalRead(32) == 0){
     break;}
 }
 
-=======
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
                 case 14: // turn 180 deg for double green squares
                     serialEvent5();
                     if (green_state == 3)
@@ -987,7 +922,6 @@ while(digitalRead(32) == 0){
         }
         while (rutina == "rescate" && digitalRead(32) == 0)
         {
-<<<<<<< HEAD
            digitalWrite(LED_BUILTIN, LOW);
             serialEvent5();
             robot.steer(speed, FORWARD, steer);
@@ -1088,79 +1022,6 @@ while(digitalRead(32) == 0){
                     leer_ultrasonidos();
                     robot.steer(25, FORWARD, 0); 
 
-=======
-            if(millis()-tiemporescate>25000){
-                ball_counter=6;
-            }
-           digitalWrite(LED_BUILTIN, HIGH);
-            serialEvent5();
-            robot.steer(speed, FORWARD, steer);
-        
-            if (green_state == 6)
-            {
-                runTime(0,FORWARD,0,1000);
-                runTime(30,BACKWARD,0,20);
-                runTime(30,FORWARD,0,20);
-                claw.depositCenter();
-                delay(1000);
-                claw.lower();
-                delay(1000);
-                runDistance(30,FORWARD,4);
-                claw.close();
-                delay(1000);
-                claw.sortRight();
-                delay(1000);
-                digitalWrite(BUZZER, HIGH);
-                delay(100); 
-                digitalWrite(BUZZER, LOW);
-                claw.lift();
-                delay(1000);
-                claw.open();
-                delay(1000);
-                runTime(30,FORWARD,0,200);
-                runTime(30,BACKWARD,0,200);
-                 ball_counter++;
-                tiemporescate=millis();
-            }
-            if (green_state == 7)
-            {
-                runTime(0,FORWARD,0,1000);
-                runTime(30,BACKWARD,0,20);
-                runTime(30,FORWARD,0,20);
-                claw.depositCenter();
-                claw.sortLeft();
-                delay(1000);
-                claw.lower();
-                delay(1000);
-                runDistance(30,FORWARD,4);
-                claw.close();
-                delay(1000);
-                claw.sortLeft();
-                delay(1000);
-                digitalWrite(BUZZER, HIGH);
-                delay(100); 
-                digitalWrite(BUZZER, LOW);
-                claw.lift();
-                delay(1000);
-                claw.open();
-                delay(1000);
-                runTime(30,FORWARD,0,200);
-                runTime(30,BACKWARD,0,200);
-                 ball_counter++;
-                tiemporescate=millis();
-            }
-            if (ball_counter>= 5)
-            {
-                Serial5.write(248);
-                claw.close();
-                runTime(0,FORWARD,0,1000);
-                float diferencia = calcularDiferenciaAngulo(leer_yaw(), angulo_rescate);
-                runAngle(30, FORWARD, diferencia);
-                while(digitalRead(32) == 0){
-                    leer_ultrasonidos();
-                    robot.steer(25, FORWARD, 0); 
-
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
                     if(!alineado && front_distance < 12){
                         runTime(0, FORWARD, 0, 1000); 
                         if(pared == "left"){
@@ -1180,7 +1041,6 @@ while(digitalRead(32) == 0){
                             runTime(20,FORWARD,0,200);
                             if(left_distance < right_distance)
                             {
-<<<<<<< HEAD
 
                                     
                                 runAngle(25,FORWARD,-90);
@@ -1204,69 +1064,3 @@ while(digitalRead(32) == 0){
         } // end while (rutina == "rescate" && digitalRead(32) == 0)
     } // end else (principal del loop)
 } // end loop()
-=======
-                                serialEvent5();
-                                if(green_state==7){
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                }
-
-                                    if(green_state==8){
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                }
-                                else{
-                                    
-                                runAngle(25,FORWARD,-90);}
-                            }
-                            else if(right_distance<left_distance)
-                            {
-                                if(green_state==7){
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                }
-
-                                    if(green_state==8){
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                    digitalWrite(BUZZER, HIGH);
-                                    delay(100);
-                                    digitalWrite(BUZZER, LOW);
-                                }
-                                else{
-                                    
-                                    runAngle(25,FORWARD,-90);}
-                            }
-                        }
-                    }
-                } 
-            } 
-        } 
-    } 
-} // end loop()
->>>>>>> 4b68b7c4513c2491f33e5c83adaba346394d4e0c
