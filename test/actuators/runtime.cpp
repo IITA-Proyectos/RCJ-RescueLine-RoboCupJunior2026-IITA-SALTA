@@ -2,22 +2,26 @@
 #include <drivebase.h>
 #include <PID.h>
 #include <claw.h>
-#include "lidar.h"
 #include <Wire.h>
 #include <elapsedMillis.h>
 
 bool startUp = false;
-Moto bl(29, 28, 27); // pwm, dir, enc
-Moto fl(7, 6, 5);
-Moto br(36, 37, 38);
-Moto fr(4,3,2);
+Moto bl(29, 28, 27, "BL"); // pwm, dir, enc
+Moto fl(7, 6, 5, "FL");
+Moto br(36, 37, 38, "BR");
+Moto fr(4, 3, 2, "FR");
 DriveBase robot(&fl, &fr, &bl, &br);
 
 void ISR1() { bl.updatePulse(); }
 void ISR2() { fl.updatePulse(); }
 void ISR3() { br.updatePulse(); }
 void ISR4() { fr.updatePulse(); }
-
+void reset_enconder(){
+    bl.resetPulseCount();
+    fl.resetPulseCount();
+    br.resetPulseCount();
+    fr.resetPulseCount();
+}
 void setup() {
   robot.steer(0, 0, 0);
   attachInterrupt(digitalPinToInterrupt(27), ISR1, CHANGE);

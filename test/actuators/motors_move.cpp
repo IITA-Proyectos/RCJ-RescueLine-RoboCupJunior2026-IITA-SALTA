@@ -15,10 +15,10 @@
 // INITIALISE BNO055 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 // INITIALISE ACTUATORS //
-Moto bl(29, 28, 27); // pwm, dir, enc
-Moto fl(7, 6, 5);
-Moto br(36, 37, 38);
-Moto fr(4, 3, 2);
+Moto bl(29, 28, 27, "BL"); // pwm, dir, enc
+Moto fl(7, 6, 5, "FL");
+Moto br(36, 37, 38, "BR");
+Moto fr(4, 3, 2, "FR");
 DriveBase robot(&fl, &fr, &bl, &br);
 // STATE VARIABLES & FLAGS //
 int counter=0;
@@ -40,7 +40,12 @@ void ISR1() { bl.updatePulse(); }
 void ISR2() { fl.updatePulse(); }
 void ISR3() { br.updatePulse(); }
 void ISR4() { fr.updatePulse(); }
-
+void reset_enconder(){
+    bl.resetPulseCount();
+    fl.resetPulseCount();
+    br.resetPulseCount();
+    fr.resetPulseCount();
+}
 // Read Data from Raspberry by Serial TX-RX
 void serialEvent5() {
     if (Serial5.available() > 0) {

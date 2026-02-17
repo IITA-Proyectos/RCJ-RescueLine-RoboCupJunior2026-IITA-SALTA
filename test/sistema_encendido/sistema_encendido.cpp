@@ -2,7 +2,6 @@
 #include <drivebase.h>
 #include <PID.h>
 #include <claw.h>
-#include "lidar.h"
 #include <Wire.h>
 #include <elapsedMillis.h>
 bool startUp = false;

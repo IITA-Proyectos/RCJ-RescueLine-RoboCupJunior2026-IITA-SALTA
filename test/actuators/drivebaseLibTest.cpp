@@ -5,16 +5,23 @@
 // https://www.arduino.cc/reference/en/
 // https://www.pjrc.com/teensy/td_timing_IntervalTimer.html
 // https://www.arduino.cc/en/Hacking/libraryTutorial
-Moto bl(29, 28, 27);
-Moto fl(7, 6, 5); // pwm dir enc
-Moto br(36, 37, 38);
-Moto fr(4, 3, 2);
+Moto bl(29, 28, 27, "BL"); // pwm, dir, enc
+Moto fl(7, 6, 5, "FL");
+Moto br(36, 37, 38, "BR");
+Moto fr(4, 3, 2, "FR");
+DriveBase robot(&fl, &fr, &bl, &br);
 
  
+void ISR1() { bl.updatePulse(); }
 void ISR2() { fl.updatePulse(); }
 void ISR3() { br.updatePulse(); }
 void ISR4() { fr.updatePulse(); }
-DriveBase robot(&fl, &fr, &bl, &br);
+void reset_enconder(){
+    bl.resetPulseCount();
+    fl.resetPulseCount();
+    br.resetPulseCount();
+    fr.resetPulseCount();
+}
 
 void setup()
 {
