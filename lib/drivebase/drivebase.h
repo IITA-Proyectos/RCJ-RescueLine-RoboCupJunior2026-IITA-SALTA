@@ -11,16 +11,16 @@
 class Moto
 {
 public:
-    Moto(int pwmPin, int dirPin, int encPin);
+    Moto(int pwmPin, int dirPin, int encPin, const char* id);
     double getSpeed();
     double setSpeed(int dir, double rpm);
     void updatePulse();
     void resetPulseCount();
     double getPWM();
     void reset();
+    const char* id; // Identificador del motor
 
-
-private:
+public:
     long pulseCount; 
     int _pwmPin, _dirPin, _encPin;
     int _nAvg; // samples to take for speed computation
@@ -38,7 +38,7 @@ public:
     void steer(double speed, int direction, double rotation);
     void reset();
 
-private:
+public:
     Moto *_fl, *_fr, *_bl, *_br;
     double _speed, _rotation, _leftspeed, _rightspeed, _leftdir, _rightdir;
     int _direction;

@@ -4,8 +4,7 @@
 #include <Arduino.h>
 #include "drivebase.h"
 #include "PID.h"
-
-Moto::Moto(int pwmPin, int dirPin, int encPin)
+Moto::Moto(int pwmPin, int dirPin, int encPin, const char* id)
 {
     pinMode(pwmPin, OUTPUT);
     _pwmPin = pwmPin;
@@ -15,7 +14,9 @@ Moto::Moto(int pwmPin, int dirPin, int encPin)
     analogWriteFrequency(_pwmPin, 50000);
     _encPin = encPin;
     _motoPID.SetMode(AUTOMATIC);
+    this->id = id;
 }
+
 
 double Moto::getSpeed()
 {
@@ -62,7 +63,30 @@ void Moto::updatePulse()
     _rpmlist[1] = _rpmlist[2];
     _rpmlist[2] = _rpmlist[3];
     _rpmlist[3] = _end - _begin;
-    pulseCount ++;
+    if (_dir== 0){
+        if (this->id == "FL" || this->id == "BL" ){
+            pulseCount ++;
+        }
+        else{
+            pulseCount --;
+        }
+       
+    }
+    if (_dir == 1){
+        if (this->id == "FL" || this->id == "BL" ){
+            pulseCount --;
+        }
+        else{
+            pulseCount ++;
+        }
+    }
+    /*
+    Serial.print("Motor "); 
+        Serial.print(id); 
+        Serial.print(": ");
+        Serial.println(pulseCount);
+    */
+    
 }
 
 void Moto::resetPulseCount()

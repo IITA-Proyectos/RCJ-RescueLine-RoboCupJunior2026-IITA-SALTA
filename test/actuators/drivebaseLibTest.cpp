@@ -32,6 +32,6 @@ void loop()
   // put your main code here, to run repeatedly:
   robot.steer(20, LOW, 0);
   delay(2000);
-  robot.sterr(20, HIGH, 0);
+  robot.steer(20, HIGH, 0);
   delay(2000);  
 }

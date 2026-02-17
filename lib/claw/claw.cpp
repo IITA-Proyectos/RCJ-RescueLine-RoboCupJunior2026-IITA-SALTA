@@ -36,51 +36,56 @@ bool Claw::available()
 
 void Claw::open(bool concurrent = false)
 {
-    _leftDFServo->setAngle(180);
-    _rightDFServo->setAngle(90);
+    _leftDFServo->setAngle(120);
+    _rightDFServo->setAngle(180);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::close(bool concurrent = false)
 {
-    _leftDFServo->setAngle(80);
-    _rightDFServo->setAngle(190);
+    _leftDFServo->setAngle(210);
+    _rightDFServo->setAngle(90);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::lift(bool concurrent = false)
 {
-    _liftDFServo->setAngle(180);
+    _liftDFServo->setAngle(210);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::lower(bool concurrent = false)
 {
-    _liftDFServo->setAngle(52);
+    _liftDFServo->setAngle(75);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::sortLeft(bool concurrent = false)
 {
-    _sortDFServo->setAngle(190);
+    _sortDFServo->setAngle(170);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::sortRight(bool concurrent = false)
 {
-    _sortDFServo->setAngle(80);
+    _sortDFServo->setAngle(90);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::depositLeft(bool concurrent = false)
 {
-    _depositDFServo->setAngle(175);
+    _depositDFServo->setAngle(190);
+    if (!concurrent) _lastAction = millis();
+}
+void Claw::depositCenter(bool concurrent = false)
+{
+    _depositDFServo->setAngle(130);
     if (!concurrent) _lastAction = millis();
 }
 
 void Claw::depositRight(bool concurrent = false)
 {
-    _depositDFServo->setAngle(100);
+    _depositDFServo->setAngle(85);
     if (!concurrent) _lastAction = millis();
 }
 

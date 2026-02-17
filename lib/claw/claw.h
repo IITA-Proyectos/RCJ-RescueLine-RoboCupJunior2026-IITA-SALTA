@@ -30,6 +30,7 @@ public:
     void sortRight(bool concurrent = false);
     void depositLeft(bool concurrent = false);
     void depositRight(bool concurrent = false);
+    void depositCenter(bool concurrent = false);
     void reset(bool concurrent = false);
     void pickupLeft(bool concurrent = false);
     void pickupRight(bool concurrent = false);

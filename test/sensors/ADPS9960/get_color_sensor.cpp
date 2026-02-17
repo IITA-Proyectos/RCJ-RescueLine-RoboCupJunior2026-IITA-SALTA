@@ -1,10 +1,18 @@
+#include <Wire.h>
 #include <Arduino.h>
-#include <Servo.h>
+#include <drivebase.h>
+#include <PID.h>
+#include <elapsedMillis.h>
 #include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
+#include "math.h"
+#include <Servo.h>
 #include <Adafruit_I2CDevice.h>
 #include <claw.h>
-#include <Ultrasonic.h>
 #include "Adafruit_APDS9960.h"
+#include <NewPing.h>
+#include <Wire.h>
+#include <VL53L0X.h>
 
 DFServo sort(20, 540, 2390, 274);
 DFServo left(14, 540, 2390, 274);
@@ -13,10 +21,7 @@ DFServo lift(22, 540, 2390, 274);
 DFServo deposit(23, 540, 2390, 274);
 Claw claw(&lift, &left, &right, &sort, &deposit);
 
-// Front Ultrasonic Sensor
-Ultrasonic front_ultrasonic(8, 9);
-int distance;
-
+// Front Ultrasonic Sensor9)
 // Color Sensor
 Adafruit_APDS9960 apds;
 struct Color {
@@ -28,7 +33,7 @@ Color known_colors[] = {
   {"Blanco", 25, 35, 49, 131},
   {"Negro", 2, 6, 7, 20},
   {"Verde", 3, 4, 5, 15},
-  {"Plateado", 19, 25, 43, 124}
+  {"Plateado", 16, 22, 25, 77}//19,25,43,124
 };
 
 // Función para leer los valores del sensor y determinar el color
@@ -87,11 +92,11 @@ void setup()
 }
 
 void loop()
-{
+{/*
   // Ultrasound Sensor get data
   distance = front_ultrasonic.read();
   Serial.print("Distance in CM: ");
-  Serial.println(distance);
+  Serial.println(distance);*/
 
   const char* color_detected = get_color();
   // Imprimir el color detectado
