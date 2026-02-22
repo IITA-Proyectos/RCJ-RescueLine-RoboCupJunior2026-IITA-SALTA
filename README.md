@@ -48,7 +48,6 @@ He is the team mentor and has been involved in our robotics projects for several
 ## Our Robot
 All important hardware and software information and notes are stored on this Github. Use these docs as the main index:
 
-- [Documentation Index](docs/Indice.md)
 - [Software](docs/Software.md)
 - [Hardware](docs/Hardware.md)
 - [Vision + YOLO](rpi/YOLO%20y%20Raspberry.md)
