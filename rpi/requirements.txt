@@ -1,0 +1,7 @@
+﻿# Python dependencies for Raspberry Pi (rescue + line)
+
+opencv-contrib-python
+numpy
+pyserial
+ultralytics
+onnxruntime
