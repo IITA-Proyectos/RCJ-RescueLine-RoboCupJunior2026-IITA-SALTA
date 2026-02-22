@@ -2,7 +2,7 @@
 
 ## Contexto del equipo
 
-Equipo activo:
+Equipo:
 - Laureano
 - Lucio
 - Benjamin
