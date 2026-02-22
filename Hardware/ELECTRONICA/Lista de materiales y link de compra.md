@@ -4,11 +4,11 @@ A continuación se detallan los componentes que estamos haciendo uso para hacer 
 
 ## Componentes Electrónicos
 
-### Cámara: 0.3 MegaPixels USB Camera for Raspberry Pi / NVIDIA Jetson Nano / UNIHIKER
+### USB Wide Camera 140°
 
 - **Uso:** Reconocimiento de imagen
 - **Cantidad:** 1
-- **Enlace:** [USB Camera](https://www.dfrobot.com/product-2089.html)
+- **Enlace:** [USB Camera](https://www.amazon.com/Yosoo-Health-Gear-Synchronization-Lightburn/dp/B0DR7XXJL1)
 
 ### BNO055
 
