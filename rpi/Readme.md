@@ -9,7 +9,7 @@ Esta carpeta contiene el software que corre en la Raspberry Pi.
   - `camthreader.py`: captura de camara por hilo.
   - `calibration.py`: utilidades de calibracion.
 - `test/`: scripts de prueba (camara, serial, etc.).
-- `AI/`: modelos y experimentos.
+- `AI/`: modelos 
 
 ## Programa principal
 
