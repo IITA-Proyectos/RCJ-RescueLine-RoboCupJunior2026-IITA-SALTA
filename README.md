@@ -22,7 +22,7 @@ He is the team mentor and has been involved in our robotics projects for several
 **Members:**
 
 - **Benjamin Villagran**:
-  He is in charge of the electronics part of our robot and the programming in C++.
+  He is in charge of the electronics part of our robot and the programming in python.
 
 
 - **Lucio Saucedo**:
