@@ -31,7 +31,7 @@ Resumen del reglamento 2026:
 ## Pendientes prioritarios
 
 - Definir decision sobre segunda camara y documentarla.
-- Evaluar si la camara wide fija cubre rescate y si la segunda camara mejora la linea.
+- Evaluar la incorporación de una segunda cámara, verificando que no afecte el desempeño de la cámara wide en rescate y que mejore efectivamente el seguimiento de línea en curvas cerradas.
 - Prototipo rapido de segunda camara con soporte temporal (si se aprueba).
 - Probar linea en curvas 135 con la camara baja.
 - Evaluar el impacto mecanico de mover el servo lift.
