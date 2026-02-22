@@ -86,7 +86,7 @@ def modo_rescate():
     import math
 
     # ---- CONFIG ----
-    MODEL_PATH = "/home/iita/Desktop/roboligaonnxpa2.onnx"
+    MODEL_PATH = "/home/iita/Desktop/zonasdepositoalta.onnx"
     CLASS_NAMES = ['negro', 'plateado', 'rojo alto', 'verde_alto']
     SCORE_THRESHOLD = 0.45
     IMGSZ = 256

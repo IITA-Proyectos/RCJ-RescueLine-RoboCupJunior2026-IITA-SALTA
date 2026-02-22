@@ -870,41 +870,41 @@ void loop()
                     break;
                     }
 
-               case 12:
-{
-    serialEvent5();
+                case 12:
+                    {
+                        serialEvent5();
 
-    float diferencia = calcularDiferenciaAngulo(leer_yaw(), centrar);
-    runAngle(30, FORWARD, diferencia);
-    runTime(30, BACKWARD, 0, 300);
-    runTime(0, FORWARD, 0, 2000);
-while(digitalRead(32) == 0){
-    robot.steer(0, FORWARD, 0);
-    
-    serialEvent5();
+                        float diferencia = calcularDiferenciaAngulo(leer_yaw(), centrar);
+                        runAngle(30, FORWARD, diferencia);
+                        runTime(30, BACKWARD, 0, 300);
+                        runTime(0, FORWARD, 0, 2000);
+                    while(digitalRead(32) == 0){
+                        robot.steer(0, FORWARD, 0);
+                        
+                        serialEvent5();
 
-    if (green_state == 15)
-    {
-        runTime(30, FORWARD, 0, 500);
-        runAngle(30, FORWARD, 80);
-        break;
-    }
+                        if (green_state == 15)
+                        {
+                            runTime(30, FORWARD, 0, 500);
+                            runAngle(30, FORWARD, 80);
+                            break;
+                        }
 
-    if (green_state == 16)
-    {
-        runTime(30, FORWARD, 0, 200);
-        runAngle(30, FORWARD, -80);
-        break;
-    }
+                        if (green_state == 16)
+                        {
+                            runTime(30, FORWARD, 0, 200);
+                            runAngle(30, FORWARD, -80);
+                            break;
+                        }
 
-    if (green_state == 17)
-    {
-        runDistance(30, FORWARD, 15);
-        break;
-    }
+                        if (green_state == 17)
+                        {
+                            runDistance(30, FORWARD, 15);
+                            break;
+                        }
 
-    break;}
-}
+                        break;}
+                    }
 
                 case 14: // turn 180 deg for double green squares
                     serialEvent5();
@@ -927,7 +927,7 @@ while(digitalRead(32) == 0){
             robot.steer(speed, FORWARD, steer);
             digitalWrite(0,LOW);
 
-            if (green_state == 6)
+            if (green_state == 6) // Recoleccion Pelota negra
             {
                 runTime(0,FORWARD,0,1000);
                 claw.lower();
@@ -952,7 +952,7 @@ while(digitalRead(32) == 0){
                 runTime(30,BACKWARD,0,200);
                  ball_counter++;
             }
-            if (green_state == 7)            {
+            if (green_state == 7)            { // Recoleccion Pelota plateada
                 runTime(0,FORWARD,0,1000);
                 claw.lower();
                 claw.sortLeft();

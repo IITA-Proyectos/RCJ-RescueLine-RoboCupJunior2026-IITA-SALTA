@@ -24,8 +24,6 @@ He is the team mentor and has been involved in our robotics projects for several
 - **Benjamin Villagran**:
   He is in charge of the electronics part of our robot and the programming in C++.
 
-- **Valentina Guaymas**:
-  She focuses on making the 3D design of the chassis of our robot and the programming in Python.
 
 - **Lucio Saucedo**:
   He is in charge of programming in Python and handling the Raspberry Pi integration.
@@ -33,8 +31,7 @@ He is the team mentor and has been involved in our robotics projects for several
 - **Laureano Monteros**:
   He is in charge of programming in C++ and handling the Teensy integration.
 
-- **Agustin Figueroa**:
-  He is assisting Laureano Monteros with programming in C++ and Teensy integration.
+
 
 ## Our School
 ![pixelcut-export (1)](https://github.com/user-attachments/assets/af8189e7-86d0-4705-9e5a-2e3c87026997)
@@ -49,9 +46,12 @@ He is the team mentor and has been involved in our robotics projects for several
 **Buenos Aires 135, oficina 102**
 
 ## Our Robot
-All important hardware and software information and notes are stored on this Github. Here's a small overview of the links to the most important repositories. These will be updated and complemented with more information.
-+ [Hardware - Robot Design and Components](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/9b5230cf73d64be5884076b33739620f5f83353e/Hardware)
-+ [Software - Teensy](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/54fdd2a850cca9e5c6add4816fcaab7ec3cc4359/test)
-+ [Software - Python](https://github.com/IITA-Proyectos/Roboliga-2024-Rescue-Line-Team-RescueBot/tree/main/rpi)
+All important hardware and software information and notes are stored on this Github. Use these docs as the main index:
+
+- [Documentation Index](docs/Indice.md)
+- [Software](docs/Software.md)
+- [Hardware](docs/Hardware.md)
+- [Vision + YOLO](rpi/YOLO%20y%20Raspberry.md)
+- [Raspberry <-> Teensy Communication](rpi/Comunicacion%20de%20la%20raspberry%20y%20la%20teensy.md)
 
 
