@@ -23,6 +23,30 @@ Este documento explica como funciona la vision en la Raspberry Pi, como se integ
 - `depositar`: YOLO para zonas de deposito.
 - `depositar verde`: sub-estado para la zona verde.
 
+## Reglamento 2026 - Zona de rescate (resumen operativo)
+
+Resumen basado en el reglamento 2026:
+- La **zona de evacuacion** mide **120 cm x 90 cm** y tiene paredes de al menos 10 cm.
+- La entrada tiene una **cinta plateada reflectiva** (25 mm x 250 mm).
+- La salida tiene una **cinta negra** (25 mm x 250 mm).
+- La **linea negra termina** en la entrada y **vuelve a comenzar** en la salida.
+- Hay **dos zonas altas** de evacuacion: una **roja** (victima muerta) y una **verde** (victimas vivas).
+- Las zonas son **triangulos rectos de 30 cm x 30 cm** con paredes de **6 cm** y centro hueco.
+- Las zonas pueden estar en cualquier esquina que no sea entrada/salida.
+- Puede haber **obstaculos o speed bumps** dentro de la zona, pero **no suman puntos**.
+- Puede haber **luces LED blancas** en la parte alta de las paredes.
+- Las victimas son esferas de 4-5 cm, con masa descentrada (max 80 g):
+  - **Vivas**: plateadas, reflectivas y conductoras.
+  - **Muerta**: negra, no conductora.
+- Se pueden colocar **victimas falsas** y el robot debe ignorarlas.
+
+### Implementacion del equipo 2026
+
+Por ahora el objetivo es **detectar y depositar en las 2 zonas altas (roja y verde)**.  
+No estamos implementando manejo de obstaculos nuevos dentro de la zona de rescate, solo la deteccion y deposito.
+
+Fuente: `RCJRescueLine2026-draft.pdf` (borrador 2026-01-28).
+
 ## Pipeline de vision en linea
 
 1. Captura con `camthreader` y rotacion 180.

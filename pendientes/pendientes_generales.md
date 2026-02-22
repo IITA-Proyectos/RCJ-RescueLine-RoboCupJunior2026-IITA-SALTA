@@ -1,68 +1,101 @@
-﻿# Pendientes generales (2026-02-22)
+﻿# Pendientes unificados (2026-02-22)
 
 ## Contexto del equipo
 
-Actualmente el equipo activo esta formado por 3 integrantes:
+Equipo activo:
 - Laureano
 - Lucio
 - Benjamin
 
-Los tres trabajamos en el mismo objetivo general. La unica diferencia es que Benjamin tambien hace pruebas de IA por separado.
+Los tres trabajamos en el mismo objetivo general. La unica diferencia es que Benjamin hace pruebas de IA por separado.
 
-El foco principal es **optimizar el rescate con IA** para aumentar FPS en Raspberry, manteniendo precision y estabilidad en pista.
+Objetivo principal: optimizar el rescate con IA para aumentar FPS en Raspberry, manteniendo precision y estabilidad.
 
-## Estado general del problema
+## Cambios del reglamento 2026 (zona de rescate) a los que nos adaptamos
 
-- El modelo actual funciona pero el FPS es limitado porque corre en CPU y con un pipeline pesado.
-- Se intento Edge Impulse y no es viable por el tamano del dataset.
-- Reducir la cantidad de imagenes degrada la deteccion.
-- Se evalua cambiar el setup de camaras para mejorar linea y rescate en simultaneo.
-- La camara wide actual **queda fija** en rescate. La duda actual es si agregar una segunda camara.
-- El entorno de pista variara mucho este ano, por eso se prioriza **robustez** antes que una metodologia unica de medicion.
+Resumen del reglamento 2026:
+- Zona de evacuacion de 120 cm x 90 cm con paredes de al menos 10 cm.
+- Cinta plateada reflectiva en la entrada (25 mm x 250 mm).
+- Cinta negra en la salida (25 mm x 250 mm).
+- La linea negra termina en la entrada y vuelve a empezar en la salida.
+- Dos zonas altas (triangulos): rojo (victima muerta) y verde (victimas vivas).
+- Triangulos de 30 cm x 30 cm, paredes de 6 cm, centro hueco.
+- Paredes de cualquier color excepto rojo, verde y negro.
+- Zonas en cualquier esquina que no sea entrada/salida.
+- Puede haber obstaculos o speed bumps dentro de la zona (no suman puntos).
+- Puede haber luces LED blancas en la parte alta de las paredes.
+- Puede haber victimas falsas que deben ignorarse.
+- Victimas reales: esferas de 4-5 cm, masa descentrada, max 80 g.
+  - Vivas: plateadas, reflectivas y conductoras.
+  - Muerta: negra, no conductora.
 
-## Pendientes de alto nivel
+## Alcance actual del equipo en rescate
 
-- [ ] Definir el objetivo de FPS minimo aceptable para rescate (ej: 15+ FPS sostenidos en CPU).
-- [ ] Revisar si se mantiene el pipeline actual con `ultralytics` + `onnxruntime` o si se migra a otro runtime.
-- [ ] Definir si se agrega una **segunda camara** (la wide actual queda fija).
-- [ ] Validar que el cambio de camara soluciona perdidas en curvas 135 grados sin generar nuevos problemas.
-- [ ] Prepararse con el **nuevo reglamento de la zona de rescate** (esto es prioridad maxima).
+- La camara wide se mantiene fija para rescate.
+- Objetivo actual: detectar y depositar en las 2 zonas altas (roja y verde).
+- No estamos implementando manejo de obstaculos nuevos en rescate por ahora.
+- La salida de la zona no funciona como esperamos y es prioridad corregirla.
 
-## Pendientes de software
+## Trabajo en equipo (tareas comunes)
 
-- [ ] Registrar FPS reales en rescate con el modelo ONNX FP32 y el pipeline completo.
-- [ ] Medir FPS con variaciones de `IMGSZ` y `DETECT_EVERY` para encontrar el mejor balance.
-- [ ] Revisar thresholds por clase para evitar falsos positivos en rescate.
-- [ ] Verificar estabilidad del tracking (MOSSE o fallback) en secuencias largas.
-- [ ] Confirmar que el pipeline multihilo no tiene colas saturadas ni latencias acumuladas.
-- [ ] Registrar consumo de CPU y memoria para identificar cuellos de botella.
-- [ ] Disenar y validar logica alternativa para **una sola camara** cuando se pierde linea (ver detalle en tareas actuales).
+- Definir decision sobre segunda camara y documentarla.
+- Evaluar si la camara wide fija cubre rescate y si la segunda camara mejora la linea.
+- Prototipo rapido de segunda camara con soporte temporal (si se aprueba).
+- Probar linea en curvas 135 con la camara baja.
+- Evaluar el impacto mecanico de mover el servo lift.
+- Implementar y testear la estrategia de re-enganche con ROIs laterales.
+- Definir umbral de poca linea negra que dispara el green_state.
+- Definir porcentaje de linea confiable para volver al seguimiento normal.
+- Documentar el flujo completo Raspberry -> Teensy -> Raspberry.
+- Revisar thresholds por clase para evitar falsos positivos en rescate.
+- Verificar estabilidad del tracking (MOSSE o fallback) en secuencias largas.
+- Confirmar que el pipeline multihilo no tiene colas saturadas ni latencias acumuladas.
+- Registrar consumo de CPU y memoria para identificar cuellos de botella.
 
-## Pendientes de dataset
+## Sistema de re-enganche en curvas cerradas (una sola camara)
 
-- [ ] Revisar distribucion de clases (balance entre pelotas y zonas).
-- [ ] Agregar augmentation con **linternas intermitentes** para robustez de iluminacion.
-- [ ] Validar si el augmentation produce mejoras reales en pista.
-- [ ] Definir criterio de stop para no degradar el dataset con augmentation excesivo.
+1. La Raspberry calcula el porcentaje de linea negra visible.
+2. Si baja de un umbral minimo, la Raspberry envia un green_state especial a la Teensy.
+3. La Teensy retrocede una distancia corta para recuperar contexto visual.
+4. La Raspberry analiza ROIs laterales (izquierda y derecha) buscando linea negra.
+5. Si hay linea en un ROI, se gira hacia ese lado.
+6. Si no hay linea, la Teensy avanza recto hasta recuperar un porcentaje confiable.
+7. Al recuperar el porcentaje durante varios frames seguidos, se vuelve al modo normal.
 
-## Pendientes de hardware
+Parametros por definir:
+- Umbral de poca linea negra.
+- Umbral de linea confiable.
+- Tiempo o distancia de retroceso.
+- Tamano y ubicacion exacta de ROIs laterales.
 
-- [ ] Disenar y validar el montaje de la segunda camara si se aprueba.
-- [ ] Evaluar el impacto de mover el servo `lift` en recoleccion y deposito.
-- [ ] Verificar cableado y consumo de energia con dos camaras.
-- [ ] Comprobar que el nuevo angulo de camara inferior mejora curvas 135.
-- [ ] Resolver **pendientes laterales inclinadas**: falta grip en pendientes; buscar una solucion mecanica/ruedas que asegure agarre.
+## Tareas especificas de Benjamin (IA)
 
-## Riesgos actuales
+- Probar TFLite con NMS en Raspberry Pi 5.
+- Resultado actual: 16 FPS en pruebas internas.
+- Comparar FPS vs precision con el modelo ONNX FP32.
+- Ajustar augmentations con linternas intermitentes.
+- Medir impacto de los augmentations en detecciones reales.
 
-- Riesgo de perder precision al intentar optimizar solo FPS.
-- Riesgo de introducir vibracion o movimiento adicional con la nueva camara.
-- Riesgo de empeorar la mecanica del `lift` si se cambia su posicion.
-- Riesgo de no cumplir el **nuevo reglamento de rescate** si no se prioriza a tiempo.
+## Pendientes tecnicos prioritarios
 
-## Entregables minimos esperados
+- [ ] Corregir la salida de la zona de evacuacion.
+- [ ] Medir FPS reales en rescate con ONNX FP32 y pipeline completo.
+- [ ] Medir FPS con variaciones de IMGSZ y DETECT_EVERY.
+- [ ] Revisar si el modelo pierde deteccion con menos imagenes.
+- [ ] Probar augmentation de iluminacion simulando linternas intermitentes.
+- [ ] Validar comportamiento de detecciones en pista con cambios de luz.
+- [ ] Resolver pendientes laterales inclinadas (falta grip).
 
-- Documentacion final de pipeline con FPS medidos.
-- Decision formal sobre segunda camara (si/no, y razon).
-- Dataset actualizado con augmentation validado.
-- Codigo actualizado y sincronizado en repo.
+## Bloqueos actuales
+
+- La segunda camara requiere definicion mecanica antes de programar cambios en serio.
+- Las pruebas de dataset necesitan tiempo de reentrenamiento.
+- Ajustes por nuevo reglamento de rescate aun en revision (prioridad alta).
+
+## Criterios de exito
+
+- FPS sostenidos superiores a 15 con rescate estable.
+- Detecciones consistentes en condiciones reales de luz.
+- Mejora clara en curvas 135 sin salidas de linea.
+- Salida de zona de evacuacion funcionando de forma confiable.
+- Cumplimiento del nuevo reglamento de rescate.
