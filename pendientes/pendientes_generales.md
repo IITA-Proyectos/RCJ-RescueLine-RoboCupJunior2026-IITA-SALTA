@@ -27,12 +27,6 @@ Resumen del reglamento 2026:
   - Vivas: plateadas, reflectivas y conductoras.
   - Muerta: negra, no conductora.
 
-## Alcance actual del equipo en rescate
-
-- La camara wide se mantiene fija para rescate.
-- Objetivo actual: detectar y depositar en las 2 zonas altas (roja y verde).
-- No estamos implementando manejo de obstaculos nuevos en rescate por ahora.
-- La salida de la zona no funciona como esperamos y es prioridad corregirla.
 
 ## Trabajo en equipo (tareas comunes)
 
