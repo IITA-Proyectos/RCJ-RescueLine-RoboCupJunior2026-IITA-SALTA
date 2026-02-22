@@ -28,7 +28,7 @@ Resumen del reglamento 2026:
   - Muerta: negra, no conductora.
 
 
-## Trabajo en equipo (tareas comunes)
+## Pendientes prioritarios
 
 - Definir decision sobre segunda camara y documentarla.
 - Evaluar si la camara wide fija cubre rescate y si la segunda camara mejora la linea.
@@ -36,11 +36,13 @@ Resumen del reglamento 2026:
 - Probar linea en curvas 135 con la camara baja.
 - Evaluar el impacto mecanico de mover el servo lift.
 - Implementar y testear la estrategia de re-enganche con ROIs laterales.
-- Verificar estabilidad del tracking (MOSSE o fallback) en secuencias largas.
-- Confirmar que el pipeline multihilo no tiene colas saturadas ni latencias acumuladas.
-- Registrar consumo de CPU y memoria para identificar cuellos de botella.
-
-## Sistema de re-enganche en curvas cerradas (una sola camara)
+- Salida de la zona de rescate de manera correcta tenemos una base pero no funciona con los obstaculos 
+- Definir estrategia para resolver pendientes laterales inclinadas (mecánica vs control).
+- Definir cómo adaptar el modelo de IA ante:
+    Cambios de color en paredes.
+    Iluminación variable.
+    Linterna intermitente.
+## Sistema de re-enganche en curvas cerradas con camara WIDE
 
 1. La Raspberry calcula el porcentaje de linea negra visible.
 2. Si baja de un umbral minimo, la Raspberry envia un green_state especial a la Teensy.
@@ -64,14 +66,6 @@ Parametros por definir:
 - Ajustar augmentations con linternas intermitentes.
 - Medir impacto de los augmentations en detecciones reales.
 
-## Pendientes tecnicos prioritarios
-
-- [ ] Corregir la salida de la zona de evacuacion.
-- [ ] Medir FPS reales en rescate con ONNX FP32 y pipeline completo.
-- [ ] Probar augmentation de iluminacion simulando linternas intermitentes.
-- [ ] Grabar videos del robot en zona de rescate con diferentes paredes para entrenarlo con diferentes fondos.
-- [ ] Validar comportamiento de detecciones en pista con cambios de luz.
-- [ ] Resolver pendientes laterales inclinadas (falta grip).
 
 ## Bloqueos actuales
 
