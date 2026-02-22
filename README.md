@@ -48,9 +48,18 @@ He is the team mentor and has been involved in our robotics projects for several
 ## Our Robot
 All important hardware and software information and notes are stored on this Github. Use these docs as the main index:
 
-- [Software](docs/Software.md)
-- [Hardware](docs/Hardware.md)
-- [Vision + YOLO](rpi/YOLO%20y%20Raspberry.md)
-- [Raspberry <-> Teensy Communication](rpi/Comunicacion%20de%20la%20raspberry%20y%20la%20teensy.md)
+
+- [Vision + YOLO](rpi/YOLO%20y%20Raspberry.md) - Pipeline de vision, modelos y reglas 2026 de rescate.
+- [Raspberry <-> Teensy Communication](rpi/Comunicacion%20de%20la%20raspberry%20y%20la%20teensy.md) - Protocolo serial.
+- [Pendientes (unificado)](pendientes/pendientes_generales.md) - Estado actual y tareas.
+
+## Raspberry requirements
+
+Instalar dependencias de Python usadas por `rpi/final_rpi/Main.py`:
+
+```bash
+pip install -r rpi/requirements.txt
+```
+
 
 
