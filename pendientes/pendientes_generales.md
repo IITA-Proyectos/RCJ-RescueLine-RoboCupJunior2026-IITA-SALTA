@@ -58,14 +58,14 @@ Parametros por definir:
 - Tiempo o distancia de retroceso.
 - Tamano y ubicacion exacta de ROIs laterales.
 
-## Tareas especificas de Benjamin (IA)
+## Tareas especificas de IA
 
 - Probar TFLite con NMS en Raspberry Pi 5.
 - Resultado actual: 16 FPS en pruebas internas.
 - Comparar FPS vs precision con el modelo ONNX FP32.
 - Ajustar augmentations con linternas intermitentes.
 - Medir impacto de los augmentations en detecciones reales.
-
+- Grabar nuevos videos con los nuevos cambios implementados para adaptar el modelo a ese entorno
 
 ## Bloqueos actuales
 
