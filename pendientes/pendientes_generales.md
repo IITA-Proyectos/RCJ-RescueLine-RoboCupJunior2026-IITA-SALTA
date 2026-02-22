@@ -1,17 +1,17 @@
-﻿# Pendientes unificados (2026-02-22)
+﻿# Pendientes 
 
 ## Contexto del equipo
 
-Equipo activo:
+Equipo:
 - Laureano
 - Lucio
 - Benjamin
 
-Los tres trabajamos en el mismo objetivo general. La unica diferencia es que Benjamin hace pruebas de IA por separado.
+Los tres trabajamos en el mismo objetivo. La unica diferencia es que Benjamin hace pruebas de IA por separado.
 
 Objetivo principal: optimizar el rescate con IA para aumentar FPS en Raspberry, manteniendo precision y estabilidad.
 
-## Cambios del reglamento 2026 (zona de rescate) a los que nos adaptamos
+## Resumen reglamento 2026 (zona de rescate)
 
 Resumen del reglamento 2026:
 - Zona de evacuacion de 120 cm x 90 cm con paredes de al menos 10 cm.
@@ -80,22 +80,19 @@ Parametros por definir:
 
 - [ ] Corregir la salida de la zona de evacuacion.
 - [ ] Medir FPS reales en rescate con ONNX FP32 y pipeline completo.
-- [ ] Medir FPS con variaciones de IMGSZ y DETECT_EVERY.
-- [ ] Revisar si el modelo pierde deteccion con menos imagenes.
 - [ ] Probar augmentation de iluminacion simulando linternas intermitentes.
+- [ ] Grabar videos del robot en zona de rescate con diferentes paredes para entrenarlo con diferentes fondos.
 - [ ] Validar comportamiento de detecciones en pista con cambios de luz.
 - [ ] Resolver pendientes laterales inclinadas (falta grip).
 
 ## Bloqueos actuales
 
-- La segunda camara requiere definicion mecanica antes de programar cambios en serio.
-- Las pruebas de dataset necesitan tiempo de reentrenamiento.
-- Ajustes por nuevo reglamento de rescate aun en revision (prioridad alta).
+- La segunda camara requiere definicion mecanica antes de programar.
 
 ## Criterios de exito
 
-- FPS sostenidos superiores a 15 con rescate estable.
-- Detecciones consistentes en condiciones reales de luz.
+- FPS superiores a 15 con rescate estable.
+- Detecciones consistentes en diferente iluminacion.
 - Mejora clara en curvas 135 sin salidas de linea.
 - Salida de zona de evacuacion funcionando de forma confiable.
-- Cumplimiento del nuevo reglamento de rescate.
+- No perder mucho tiempo probando las cosas

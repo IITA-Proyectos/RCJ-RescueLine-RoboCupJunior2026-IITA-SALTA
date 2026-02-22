@@ -10,10 +10,10 @@ Este documento explica como funciona la vision en la Raspberry Pi, como se integ
 - En rescate, detectar pelotas y zonas con YOLO.
 - Enviar comandos a la Teensy por serial (ver `rpi/Comunicacion de la raspberry y la teensy.md`).
 
-## Hardware (segun BOM)
+## Hardware
 
-- Raspberry Pi 4 8GB
-- Camara USB 0.3 MP
+- Raspberry Pi 4 Model B 8GB
+- Camara USB 2MP
 
 ## Estados del programa (Main.py)
 
@@ -45,7 +45,6 @@ Resumen basado en el reglamento 2026:
 Por ahora el objetivo es **detectar y depositar en las 2 zonas altas (roja y verde)**.  
 No estamos implementando manejo de obstaculos nuevos dentro de la zona de rescate, solo la deteccion y deposito.
 
-Fuente: `RCJRescueLine2026-draft.pdf` (borrador 2026-01-28).
 
 ## Pipeline de vision en linea
 
@@ -85,14 +84,13 @@ En rescate se usan 4 clases:
 | Fecha | Archivo | Notas |
 |---|---|---|
 | 11-09 | `roboliga.onnx` | Primeras pruebas de rescate. |
-| 11-09 | `Roboliga 2025.v5-rescate.yolov8.zip` | Version exportada YOLOv8. |
+| 11-09 | `Roboliga 2025.v5-rescate.yolov8.zip` | Dataset Version exportada YOLOv8. |
 | 20-11 | `depositoalto.onnx` | Pruebas de zonas. |
-| 20-11 | `Roboliga 2025.v12-zonas-alta.yolov8.zip` | Version exportada YOLOv8. |
+| 20-11 | `Roboliga 2025.v12-zonas-alta.yolov8.zip` | Dataset Version exportada YOLOv8. |
 | 23-11 | `zonasdepositoalta.onnx` | Modelo usado en `Main.py`. |
-| 23-11 | `Roboliga 2025.v15-sinboxes-bajas.yolov8.zip` | Version exportada YOLOv8. |
+| 23-11 | `Roboliga 2025.v15-sinboxes-bajas.yolov8.zip` | Dataset Version exportada YOLOv8. |
 
-En el codigo actual se carga:
-- `MODEL_PATH = /home/iita/Desktop/zonasdepositoalta.onnx`
+
 
 ## Dependencias (Raspberry Pi)
 
