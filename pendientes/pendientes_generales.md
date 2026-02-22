@@ -1,8 +1,6 @@
 ﻿# Pendientes 
 
-## Contexto del equipo
-
-Equipo:
+## Equipo:
 - Laureano
 - Lucio
 - Benjamin
