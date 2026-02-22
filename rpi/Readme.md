@@ -25,4 +25,4 @@ La comunicacion completa esta documentada en:
 ## Enlaces
 
 - Carpeta de fotos y videos (Drive):
-  - https://drive.google.com/drive/folders/1SISuqbR4ozlXLr0Eub9-PZQp9NpHZYew
+  - https://drive.google.com/drive/folders/155xTIpLF9liF-LiiE0WMLb7epZ9MYj3t?usp=sharing
