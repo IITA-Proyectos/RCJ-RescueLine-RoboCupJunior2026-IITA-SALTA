@@ -40,10 +40,7 @@ Resumen basado en el reglamento 2026:
   - **Muerta**: negra, no conductora.
 - Se pueden colocar **victimas falsas** y el robot debe ignorarlas.
 
-### Implementacion del equipo 2026
 
-Por ahora el objetivo es **detectar y depositar en las 2 zonas altas (roja y verde)**.  
-No estamos implementando manejo de obstaculos nuevos dentro de la zona de rescate, solo la deteccion y deposito.
 
 
 ## Pipeline de vision en linea
