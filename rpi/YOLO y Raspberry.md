@@ -13,7 +13,7 @@ Este documento explica como funciona la vision en la Raspberry Pi, como se integ
 ## Hardware
 
 - Raspberry Pi 4 Model B 8GB
-- Camara USB 2MP
+- Camara USB 2MP WIDE 140°
 
 ## Estados del programa (Main.py)
 
